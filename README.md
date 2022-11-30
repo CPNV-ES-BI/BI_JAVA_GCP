@@ -1,5 +1,9 @@
 # Hello_World-Microservice
 
+## Versions
+
+    - Java 19.0.1
+
 ## Install Java JDK locally
 
 You can download it from the Oracle [website](https://www.oracle.com/java/technologies/downloads/#jdk19-windows)
