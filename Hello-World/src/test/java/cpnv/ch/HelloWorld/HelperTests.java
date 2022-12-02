@@ -8,7 +8,7 @@ class HelperTests {
 
 
 
-	@BeforeAll
+/*	@BeforeAll
 	void test_BeforeAll() {
 	}
 	@BeforeEach
@@ -19,12 +19,12 @@ class HelperTests {
 	}
 	@AfterEach
 	void test_AfterEach() {
-	}
+	}*/
 
 
 
 	@Test
-	public void test_DoesExist_ExistsCase_Success() {
+	public void test_DoesExist_ExistsCase_True() {
 		//given
 
 		//when
@@ -33,7 +33,7 @@ class HelperTests {
 	}
 
 	@Test
-	public void test_DoesExist_NotExists_Success() {
+	public void test_DoesExist_NotExists_False() {
 		//given
 
 		//when
