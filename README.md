@@ -22,5 +22,10 @@ git clone https://github.com/Nomeos/Hello_World-Microservice.git
 
 ## Create the docker image from the code
 ```
-docker build --build-arg JAR_FILE=build/libs/\*.jar -t cpnv/hello-world-microservice .
+docker build --build-arg JAR_FILE=build/libs/\*.jar -t java-docker .
+```
+
+## Run the docker image
+```
+docker run -it --rm --name springboot-test java-docker
 ```
