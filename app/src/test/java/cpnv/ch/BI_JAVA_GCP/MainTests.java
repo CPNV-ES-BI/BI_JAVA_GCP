@@ -1,4 +1,4 @@
-package cpnv.ch.HelloWorld;
+package cpnv.ch.BI_JAVA_GCP;
 
 import org.junit.jupiter.api.*;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
-class HelloWorldApplicationTests {
+class MainTests {
 
 
 	@Test
