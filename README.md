@@ -14,17 +14,17 @@ You can download it from the Oracle [website](https://www.oracle.com/java/techno
 git clone https://github.com/Nomeos/Hello_World-Microservice.git
 ```
 
-## Build the projet locally
+## Build the project locally
 
 ```
-.\gradlew build
+./mvnw spring-boot:run
 ```
 
 ## Create the docker image from the code
 
-First, you can build the base image with the following command:
+First, you can build the production image with the following command:
 ```
-docker build --no-cache -t cpnv/hello-world-microservice-base --target base .
+docker build --no-cache -t cpnv/hello-world-microservice-base .
 ```
 
 This command build an image in the docker and specify the target to build.
@@ -37,7 +37,7 @@ docker build --no-cache -t cpnv/hello-world-microservice-test --target test .
 
 ## Run the docker image
 
-### Run the base image
+### Run the production image
 
 ```
 docker run -it --rm --name hello-world-base cpnv/hello-world-microservice-base
@@ -45,8 +45,9 @@ docker run -it --rm --name hello-world-base cpnv/hello-world-microservice-base
 ### Run the test image
 
 ```
-docker run -it --rm --name hello-world-test cpnv/hello-world-microservice-test
+docker run -it --rm cpnv/hello-world-microservice-test
 ```
 
 This command starts the image and run it as a container.
-We specify the name of the container, springboot-test in this case, and the image to run.
+It runs all tests and report the result in the console.
+
