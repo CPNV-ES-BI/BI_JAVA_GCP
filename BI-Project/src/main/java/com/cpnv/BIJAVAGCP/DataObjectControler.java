@@ -5,35 +5,37 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.cloud.storage.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
-public class DataObjectControler implements DataObject{
-    public void createObject(String projectId, String bucketName){
-        // The ID of your GCP project
-        // String projectId = "your-project-id";
+public class DataObjectControler implements DataObject {
 
+    // The ID of your GCP project
+    // String projectId = "your-project-id";
+    public String projectId = "es-bi-370207";
+    public Storage storage = StorageOptions.newBuilder().setProjectId(projectId).build().getService();
+
+    public void createObject(String bucketName){
         // The ID of your GCS bucket
         // String bucketName = "your-unique-bucket-name";
 
         // The ID of your GCS object
         // String objectName = "your-object-name";
 
-        Storage storage = StorageOptions.newBuilder().setProjectId(projectId).build().getService()
         // Creates the new bucket
         Bucket bucket = storage.create(BucketInfo.of(bucketName));
 
         System.out.printf("Bucket %s created.%n", bucket.getName());
     }
-    public static void deleteObject(String projectId, String bucketName, String objectName) {
-        // The ID of your GCP project
-        // String projectId = "your-project-id";
-
+    public static void deleteObject(String bucketName, String objectName) {
         // The ID of your GCS bucket
         // String bucketName = "your-unique-bucket-name";
 
         // The ID of your GCS object
         // String objectName = "your-object-name";
 
-        Storage storage = StorageOptions.newBuilder().setProjectId(projectId).build().getService();
         Blob blob = storage.get(bucketName, objectName);
         if (blob == null) {
             System.out.println("The object " + objectName + " wasn't found in " + bucketName);
@@ -50,24 +52,18 @@ public class DataObjectControler implements DataObject{
 
         System.out.println("Object " + objectName + " was deleted from " + bucketName);
     }
-    public static void listObjects(String projectId, String bucketName) {
-        // The ID of your GCP project
-        // String projectId = "your-project-id";
+    public static void listObjects(String bucketName) {
 
         // The ID of your GCS bucket
         // String bucketName = "your-unique-bucket-name";
 
-        Storage storage = StorageOptions.newBuilder().setProjectId(projectId).build().getService();
         Page<Blob> blobs = storage.list(bucketName);
 
         for (Blob blob : blobs.iterateAll()) {
             System.out.println(blob.getName());
         }
     }
-    public static void downloadObject( String projectId, String bucketName, String objectName, String destFilePath) {
-        // The ID of your GCP project
-        // String projectId = "your-project-id";
-
+    public static void downloadObject(String bucketName, String objectName, String destFilePath) {
         // The ID of your GCS bucket
         // String bucketName = "your-unique-bucket-name";
 
@@ -76,8 +72,6 @@ public class DataObjectControler implements DataObject{
 
         // The path to which the file should be downloaded
         // String destFilePath = "/local/path/to/file.txt";
-
-        Storage storage = StorageOptions.newBuilder().setProjectId(projectId).build().getService();
 
         Blob blob = storage.get(BlobId.of(bucketName, objectName));
         blob.downloadTo(Paths.get(destFilePath));
@@ -90,10 +84,7 @@ public class DataObjectControler implements DataObject{
                         + " to "
                         + destFilePath);
     }
-    public static void publish(String projectId, String bucketName, String objectName, String filePath) throws IOException {
-        // The ID of your GCP project
-        // String projectId = "your-project-id";
-
+    public static void publish(String bucketName, String objectName, String filePath) throws IOException {
         // The ID of your GCS bucket
         // String bucketName = "your-unique-bucket-name";
 
@@ -103,7 +94,6 @@ public class DataObjectControler implements DataObject{
         // The path to your file to upload
         // String filePath = "path/to/your/file"
 
-        Storage storage = StorageOptions.newBuilder().setProjectId(projectId).build().getService();
         BlobId blobId = BlobId.of(bucketName, objectName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
 

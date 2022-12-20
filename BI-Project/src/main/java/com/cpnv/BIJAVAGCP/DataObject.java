@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 public interface DataObject {
 
-    public void createObject(String projectId, String bucketName)
-    public void deleteObject(String projectId, String bucketName, String objectName)
-    public void listObjects(String projectId, String bucketName)
-    public String downloadObject(String projectId, String bucketName, String objectName, String destFilePath)
-    public void publishObject(String projectId, String bucketName, String objectName, String filePath)
+    public void createObject(String bucketName);
+    public void deleteObject(String bucketName, String objectName);
+    public void listObjects(String bucketName);
+    public String downloadObject(String bucketName, String objectName, String destFilePath);
+    public void publishObject(String bucketName, String objectName, String filePath);
 }
