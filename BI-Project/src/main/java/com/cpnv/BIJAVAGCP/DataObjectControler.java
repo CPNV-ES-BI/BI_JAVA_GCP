@@ -1,12 +1,8 @@
 package com.cpnv.BIJAVAGCP;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import com.google.api.gax.paging.Page;
 import com.google.cloud.storage.*;
-import java.io.IOException;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -23,13 +19,12 @@ public class DataObjectControler implements DataObject {
 
         // The ID of your GCS object
         // String objectName = "your-object-name";
-
         // Creates the new bucket
         Bucket bucket = storage.create(BucketInfo.of(bucketName));
 
         System.out.printf("Bucket %s created.%n", bucket.getName());
     }
-    public static void deleteObject(String bucketName, String objectName) {
+    public void deleteObject(String bucketName, String objectName) {
         // The ID of your GCS bucket
         // String bucketName = "your-unique-bucket-name";
 
@@ -52,7 +47,7 @@ public class DataObjectControler implements DataObject {
 
         System.out.println("Object " + objectName + " was deleted from " + bucketName);
     }
-    public static void listObjects(String bucketName) {
+    public void listObjects(String bucketName) {
 
         // The ID of your GCS bucket
         // String bucketName = "your-unique-bucket-name";
@@ -63,7 +58,7 @@ public class DataObjectControler implements DataObject {
             System.out.println(blob.getName());
         }
     }
-    public static void downloadObject(String bucketName, String objectName, String destFilePath) {
+    public String downloadObject(String bucketName, String objectName, String destFilePath) {
         // The ID of your GCS bucket
         // String bucketName = "your-unique-bucket-name";
 
@@ -84,7 +79,7 @@ public class DataObjectControler implements DataObject {
                         + " to "
                         + destFilePath);
     }
-    public static void publish(String bucketName, String objectName, String filePath) throws IOException {
+    public void publishObject(String bucketName, String objectName, String filePath) {
         // The ID of your GCS bucket
         // String bucketName = "your-unique-bucket-name";
 
