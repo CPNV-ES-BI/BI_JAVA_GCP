@@ -6,30 +6,32 @@ import com.google.cloud.storage.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class DataObjectControler implements DataObject {
+public class DataObjectController implements DataObject {
 
     // The ID of your GCP project
     // String projectId = "your-project-id";
     public String projectId = "es-bi-370207";
     public Storage storage = StorageOptions.newBuilder().setProjectId(projectId).build().getService();
 
-    public void createObject(String bucketName){
-        // The ID of your GCS bucket
-        // String bucketName = "your-unique-bucket-name";
 
-        // The ID of your GCS object
-        // String objectName = "your-object-name";
+    /**
+     * Create a bucket with a specific name
+     * @param bucketName the name of the bucket
+     */
+    public void createObject(String bucketName){
+
         // Creates the new bucket
         Bucket bucket = storage.create(BucketInfo.of(bucketName));
 
         System.out.printf("Bucket %s created.%n", bucket.getName());
     }
-    public void deleteObject(String bucketName, String objectName) {
-        // The ID of your GCS bucket
-        // String bucketName = "your-unique-bucket-name";
 
-        // The ID of your GCS object
-        // String objectName = "your-object-name";
+    /**
+     * Delete a bucket with a specific name
+     * @param bucketName the name of the bucket
+     * @param objectName the name of the object
+     */
+    public void deleteObject(String bucketName, String objectName) {
 
         Blob blob = storage.get(bucketName, objectName);
         if (blob == null) {
@@ -47,10 +49,12 @@ public class DataObjectControler implements DataObject {
 
         System.out.println("Object " + objectName + " was deleted from " + bucketName);
     }
-    public void listObjects(String bucketName) {
 
-        // The ID of your GCS bucket
-        // String bucketName = "your-unique-bucket-name";
+    /**
+     * List all the objects in a bucket
+     * @param bucketName the name of the bucket
+     */
+    public void listObjects(String bucketName) {
 
         Page<Blob> blobs = storage.list(bucketName);
 
@@ -58,15 +62,14 @@ public class DataObjectControler implements DataObject {
             System.out.println(blob.getName());
         }
     }
+
+    /**
+     * Download an object from a bucket
+     * @param bucketName the name of the bucket
+     * @param objectName the name of the object
+     * @param destFilePath the path where the object will be downloaded
+     */
     public String downloadObject(String bucketName, String objectName, String destFilePath) {
-        // The ID of your GCS bucket
-        // String bucketName = "your-unique-bucket-name";
-
-        // The ID of your GCS object
-        // String objectName = "your-object-name";
-
-        // The path to which the file should be downloaded
-        // String destFilePath = "/local/path/to/file.txt";
 
         Blob blob = storage.get(BlobId.of(bucketName, objectName));
         blob.downloadTo(Paths.get(destFilePath));
@@ -78,16 +81,16 @@ public class DataObjectControler implements DataObject {
                         + bucketName
                         + " to "
                         + destFilePath);
+        return "";
     }
+
+    /**
+     * Publish an object in a bucket
+     * @param bucketName the name of the bucket
+     * @param objectName the name of the object
+     * @param filePath the path of the object
+     */
     public void publishObject(String bucketName, String objectName, String filePath) {
-        // The ID of your GCS bucket
-        // String bucketName = "your-unique-bucket-name";
-
-        // The ID of your GCS object
-        // String objectName = "your-object-name";
-
-        // The path to your file to upload
-        // String filePath = "path/to/your/file"
 
         BlobId blobId = BlobId.of(bucketName, objectName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
