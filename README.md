@@ -128,6 +128,11 @@ The directory structure of the project is as follows:
 The root directory contains all the configuration files for the project and the dockerfile while the src directory is split into two parts: main and test. 
 The main directory contains the code of the application while the test directory contains the tests of the application.
 
+## Branching
+
+For branching, we will use the Gitflow branching model due to its simplicity and ease of use.
+Wiki link for specification : [wiki](https://github.com/CPNV-ES-BI/BI_JAVA_GCP/wiki#branching)
+
 ## Contribute
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
