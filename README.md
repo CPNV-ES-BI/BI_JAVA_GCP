@@ -1,16 +1,20 @@
 # Hello_World-Microservice
 
+The goal of this spring boot microservice is to use Google Cloud Platform as a data source 
+to carry out certain business intelligence-related activities.
+
+
 ## Versions
 
     - Java 17
-    - Spring Boot 3.0.0
+    - Spring Boot 2.7.6
     - Maven 4.0.0
     - Docker 20.10.17
 
 ## Getting Started
 
-This project is a simple Hello World Microservice. It is a Spring Boot application that can be run locally or in a Docker container.
-The purpose of this project is to build a simple microservice using the Google cloud platform.
+This project is a simple Microservice. It is a Spring Boot application that can be run locally or in a Docker container.
+The purpose of this project is to build a simple microservice using the Google cloud platform to perform Business Intelligence .
 
 ## Install Java JDK locally
 
@@ -102,17 +106,19 @@ The directory structure of the project is as follows:
             - java
                 - ch
                     - cpnv
-                        - hello_world_microservice
-                            - HelloWorldController.java
-                            - HelloWorldMicroserviceApplication.java
+                        - BIJAVAGCP
+                            - BiJavaGcpApplication.java
+                            - DataObject.java
+                            - DataObjectControler.java
             - resources
                 - application.properties
         - test
             - java
                 - ch
                     - cpnv
-                        - hello_world_microservice
-                            - HelloWorldControllerTest.java
+                        - BIJAVAGCP
+                            - BiJavaGcpApplicationTests.java
+                            - DataObjectTests.java
     - Dockerfile
     - README.md
     - mvnw
