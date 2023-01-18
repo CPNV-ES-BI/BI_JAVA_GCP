@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class BiJavaGcpApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(BiJavaGcpApplication.class, args);
+        //SpringApplication.run(BiJavaGcpApplication.class, args);
+        BucketController bucketController = new BucketController();
+        bucketController.list();
+
     }
 
     @GetMapping("/")
