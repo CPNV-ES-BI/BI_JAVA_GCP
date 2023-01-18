@@ -3,6 +3,7 @@ package com.cpnv.BIJAVAGCP;
 import com.google.api.gax.paging.Page;
 import com.google.cloud.storage.*;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -90,7 +91,7 @@ public class DataObjectController implements DataObject {
      * @param objectName the name of the object
      * @param filePath the path of the object
      */
-    public void publishObject(String bucketName, String objectName, String filePath) {
+    public void publishObject(String bucketName, String objectName, String filePath) throws IOException {
 
         BlobId blobId = BlobId.of(bucketName, objectName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
@@ -109,7 +110,7 @@ public class DataObjectController implements DataObject {
             // changes before the request runs.
             precondition =
                     Storage.BlobTargetOption.generationMatch(
-                            storage.get(bucketName, objectName).getGeneration());
+                    );
         }
         storage.create(blobInfo, Files.readAllBytes(Paths.get(filePath)), precondition);
 
