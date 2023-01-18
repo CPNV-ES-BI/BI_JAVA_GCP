@@ -35,8 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
-src/main/resources/access-key.json
-!/target/class/access-key.json
 
 ### Secret ###
 src/main/resources/access-key.json

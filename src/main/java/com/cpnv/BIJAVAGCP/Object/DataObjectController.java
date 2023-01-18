@@ -1,4 +1,4 @@
-package com.cpnv.BIJAVAGCP;
+package com.cpnv.BIJAVAGCP.Object;
 
 import com.google.api.gax.paging.Page;
 import com.google.cloud.storage.*;
@@ -8,7 +8,6 @@ import java.io.IOException;
 public class DataObjectController implements DataObject {
 
     public static final String BUCKET_NAME = "bi.java.cld.education";
-
 
     public void list() {
         Storage storage = StorageOptions.getDefaultInstance().getService();

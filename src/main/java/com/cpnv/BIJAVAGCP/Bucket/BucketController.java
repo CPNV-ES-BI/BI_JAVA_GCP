@@ -1,4 +1,4 @@
-package com.cpnv.BIJAVAGCP;
+package com.cpnv.BIJAVAGCP.Bucket;
 
 import com.google.api.gax.paging.Page;
 import com.google.cloud.storage.Bucket;
@@ -7,9 +7,8 @@ import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 @Component
-public class BucketController  implements DataBucket{
+public class BucketController  implements DataBucket {
 
     public void list() {
         Storage storage = StorageOptions.getDefaultInstance().getService();
