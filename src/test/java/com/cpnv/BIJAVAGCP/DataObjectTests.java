@@ -3,12 +3,14 @@ package com.cpnv.BIJAVAGCP;
 import org.junit.jupiter.api.*;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.IOException;
+
 import static org.assertj.core.api.Fail.fail;
 
 @SpringBootTest
 class DataObjectTests {
 
-
+/*
     @BeforeAll
     public static void test_BeforeAll() {
     }
@@ -22,26 +24,27 @@ class DataObjectTests {
     public static void test_AfterEach() {
     }
 
-
+*/
 
     @Test
-    public void test_DoesExist_ExistsCase_True () throws Exception {
-        fail("This test has yet to be implement");
+    public void test_DoesExist_ExistsCase_True () throws IOException {
+
         //given
-
+        DataObjectController dataObjectController = new DataObjectController();
         //when
-
+        dataObjectController.create("test.txt");
         //then
+        Assertions.assertTrue(dataObjectController.isExist("test.txt"));
     }
 
     @Test
-    public void test_DoesExist_NotExists_False() throws Exception {
-        fail("This test has yet to be implement");
+    public void test_DoesExist_NotExists_False() {
         //given
-
+        DataObjectController dataObjectController = new DataObjectController();
         //when
-
+        dataObjectController.delete("test.txt");
         //then
+        Assertions.assertTrue(dataObjectController.isExist("test.txt"));
     }
 
     @Test

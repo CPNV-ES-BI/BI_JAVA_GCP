@@ -10,9 +10,8 @@ import java.io.IOException;
 
 public interface DataObject {
 
-    public void createObject(String bucketName);
-    public void deleteObject(String bucketName, String objectName);
-    public void listObjects(String bucketName);
-    public String downloadObject(String bucketName, String objectName, String destFilePath);
-    public void publishObject(String bucketName, String objectName, String filePath) throws IOException;
+    void list();
+    void create(String fileName) throws IOException;
+    boolean isExist(String fileName);
+    void delete(String fileName);
 }
