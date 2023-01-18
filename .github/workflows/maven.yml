@@ -38,6 +38,6 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/BI_JAVA_GCP:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/bi_java_gcp:latest
       
 
