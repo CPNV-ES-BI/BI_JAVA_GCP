@@ -1,6 +1,8 @@
 package com.cpnv.BIJAVAGCP.Object;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -9,7 +11,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DataObjectControllerTest {
 
-    //create a test for @BeforeEach
+    private DataObjectController dataObjectController;
+    private String fileName;
+
+    @BeforeEach
+    void setUp() throws IOException {
+        dataObjectController = new DataObjectController();
+        fileName = "test.txt";
+        dataObjectController.create(fileName);
+    }
+
+    @AfterEach
+    void tearDown() throws IOException {
+        dataObjectController.delete(fileName);
+    }
 
 
 
@@ -17,19 +32,20 @@ class DataObjectControllerTest {
     public void test_DoesExist_ExistsCase_True () throws IOException {
 
         //given
-        DataObjectController dataObjectController = new DataObjectController();
+        boolean expected = true;
         //when
-        dataObjectController.create("test.txt");
+        boolean actual = dataObjectController.isExist(fileName);
         //then
-        assertTrue(dataObjectController.isExist("test.txt"));
+        assertEquals(expected, actual);
     }
     @Test
     public void test_DoesExist_NotExists_False() {
         //given
-        DataObjectController dataObjectController = new DataObjectController();
+        boolean expected = false;
         //when
-        dataObjectController.delete("test.txt");
+        fileName = "test2.txt";
+        boolean actual = dataObjectController.isExist(fileName);
         //then
-        assertFalse(dataObjectController.isExist("test.txt"));
+        assertEquals(expected, actual);
     }
 }
