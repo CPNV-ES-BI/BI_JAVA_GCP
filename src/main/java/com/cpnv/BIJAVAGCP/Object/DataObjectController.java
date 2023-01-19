@@ -3,8 +3,6 @@ package com.cpnv.BIJAVAGCP.Object;
 import com.google.api.gax.paging.Page;
 import com.google.cloud.storage.*;
 
-import java.io.IOException;
-
 public class DataObjectController implements DataObject {
 
     public static final String BUCKET_NAME = "bi.java.cld.education";
@@ -16,12 +14,18 @@ public class DataObjectController implements DataObject {
             System.out.println(blob.getName());
         }
     }
-    public void create(String fileName) throws IOException {
+
+    public void create(String fileName) throws ObjectAlreadyExistsException {
         Storage storage = StorageOptions.getDefaultInstance().getService();
         BlobId blobId = BlobId.of(BUCKET_NAME, fileName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
-        Blob blob = storage.create(blobInfo, "Hello, World!".getBytes());
-        System.out.println("Blob " + blob.getName() + " was created: " + blob.getCreateTime());
+        if (isExist(fileName)){
+           System.out.println(  "Blob " + fileName + " already exists.");
+            throw new ObjectAlreadyExistsException("object already exist");
+        }else{
+            Blob blob = storage.create(blobInfo, "Hello, World!".getBytes());
+            System.out.println("Blob " + blob.getName() + " was created: " + blob.getCreateTime());
+        }
     }
 
     
