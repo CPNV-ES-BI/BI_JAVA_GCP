@@ -1,21 +1,24 @@
 package com.cpnv.BIJAVAGCP;
 
 import com.cpnv.BIJAVAGCP.Object.DataObjectController;
+import com.cpnv.BIJAVAGCP.Object.ObjectAlreadyExistsException;
+import com.cpnv.BIJAVAGCP.Object.ObjectNotExistsException;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
+import java.util.Arrays;
 
 @SpringBootApplication
 @RestController
 public class BiJavaGcpApplication {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws ObjectAlreadyExistsException, ObjectNotExistsException {
         //SpringApplication.run(BiJavaGcpApplication.class, args);
         DataObjectController dataObjectController = new DataObjectController();
         dataObjectController.list();
-        dataObjectController.isExist("test.txt");
+
+        
 
     }
 

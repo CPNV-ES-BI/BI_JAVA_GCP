@@ -1,7 +1,6 @@
 package com.cpnv.BIJAVAGCP.Object;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,11 +13,13 @@ class DataObjectControllerTest {
 
     private DataObjectController dataObjectController;
     private String fileName;
+    private String destination;
 
     @BeforeEach
     void setUp() throws ObjectAlreadyExistsException {
         dataObjectController = new DataObjectController();
         fileName = "test.txt";
+        destination = "C:\\Users\\Robiel\\Downloads";
         dataObjectController.create(fileName);
     }
     @AfterEach
@@ -45,7 +46,6 @@ class DataObjectControllerTest {
         //then
         assertEquals(expected, actual);
     }
-
     @Test
     public void CreateObject_NominalCase_ObjectExists() throws Exception {
         //given
@@ -79,25 +79,25 @@ class DataObjectControllerTest {
 
         //then
     }
-
     @Test
-    public void test_DownloadObject_NominalCase_Success() throws Exception {
-        fail("This test has yet to be implement");
+    public void test_DownloadObject_NominalCase_Success() throws ObjectNotExistsException {
         //given
-
+        boolean expected = true;
         //when
-
+        boolean actual = dataObjectController.download(fileName,destination);
         //then
+        assertEquals(expected,actual);
     }
 
     @Test
-    public void test_DownloadObject_NotExists_ThrowException() throws Exception {
-        fail("This test has yet to be implement");
+    public void test_DownloadObject_NotExists_ThrowException() throws ObjectNotExistsException {
         //given
-
+        fileName = "test2.txt";
         //when
-
         //then
+        assertThrows(ObjectNotExistsException.class, () -> {
+            dataObjectController.download(fileName,destination);
+        });
     }
 
     @Test
