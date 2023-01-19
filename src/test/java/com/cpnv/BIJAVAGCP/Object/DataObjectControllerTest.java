@@ -3,9 +3,6 @@ package com.cpnv.BIJAVAGCP.Object;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-
 import static org.assertj.core.api.Fail.fail;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,7 +24,7 @@ class DataObjectControllerTest {
         dataObjectController.delete(fileName);
     }
     @Test
-    public void test_DoesExist_ExistsCase_True () throws IOException {
+    public void test_DoesExist_ExistsCase_True (){
 
         //given
         boolean expected = true;
@@ -66,9 +63,7 @@ class DataObjectControllerTest {
         boolean actual = dataObjectController.isExist(fileName);
         //then
         assertEquals(expected, actual);
-        assertThrows(ObjectAlreadyExistsException.class, () -> {
-            dataObjectController.create(fileName);
-        });
+        assertThrows(ObjectAlreadyExistsException.class, () -> dataObjectController.create(fileName));
     }
     @Test
     public void test_CreateObject_PathNotExists_Success() throws Exception {
@@ -90,14 +85,12 @@ class DataObjectControllerTest {
     }
 
     @Test
-    public void test_DownloadObject_NotExists_ThrowException() throws ObjectNotExistsException {
+    public void test_DownloadObject_NotExists_ThrowException()  {
         //given
         fileName = "test2.txt";
         //when
         //then
-        assertThrows(ObjectNotExistsException.class, () -> {
-            dataObjectController.download(fileName,destination);
-        });
+        assertThrows(ObjectNotExistsException.class, () -> dataObjectController.download(fileName,destination));
     }
 
     @Test
