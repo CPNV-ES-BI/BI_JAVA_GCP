@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.io.IOException;
 
 import static org.assertj.core.api.Fail.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class DataObjectTests {
@@ -35,7 +36,7 @@ class DataObjectTests {
         //when
         dataObjectController.create("test.txt");
         //then
-        Assertions.assertTrue(dataObjectController.isExist("test.txt"));
+        assertTrue(dataObjectController.isExist("test.txt"));
     }
     @Test
     public void test_DoesExist_NotExists_False() {
