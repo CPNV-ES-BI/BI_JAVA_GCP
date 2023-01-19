@@ -45,6 +45,19 @@ class DataObjectControllerTest {
         //then
         assertEquals(expected, actual);
     }
+
+    @Test
+    public void CreateObject_NominalCase_ObjectExists() throws Exception {
+        //given
+        boolean expected = true;
+        //when
+        fileName = "test2.txt";
+        dataObjectController.create(fileName);
+        boolean actual = dataObjectController.isExist(fileName);
+        //then
+        assertEquals(expected, actual);
+        dataObjectController.delete(fileName);
+    }
     @Test
     public void test_CreateObject_AlreadyExists_ThrowException() {
         //given

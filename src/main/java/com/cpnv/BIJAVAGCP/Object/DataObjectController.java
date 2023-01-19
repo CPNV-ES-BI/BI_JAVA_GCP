@@ -28,7 +28,17 @@ public class DataObjectController implements DataObject {
         }
     }
 
-    
+    public void read(String fileName) {
+        Storage storage = StorageOptions.getDefaultInstance().getService();
+        BlobId blobId = BlobId.of(BUCKET_NAME, fileName);
+        Blob blob = storage.get(blobId);
+        if (blob == null) {
+            System.out.println("Blob " + fileName + " does not exist.");
+        } else {
+            System.out.println(new String(blob.getContent()));
+        }
+    }
+
     public boolean isExist(String fileName){
         Storage storage = StorageOptions.getDefaultInstance().getService();
         BlobId blobId = BlobId.of(BUCKET_NAME, fileName);
