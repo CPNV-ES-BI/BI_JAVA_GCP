@@ -54,6 +54,7 @@ class DataObjectControllerTest {
         //then
         assertEquals(expected, actual);
     }
+
     @Test
     public void test_CreateObject_AlreadyExists_ThrowException() {
         //given
@@ -65,13 +66,16 @@ class DataObjectControllerTest {
         assertThrows(ObjectAlreadyExistsException.class, () -> dataObjectController.create(fileName));
     }
     @Test
-    public void test_CreateObject_PathNotExists_Success() throws Exception {
-        fail("This test has yet to be implement");
+    public void test_CreateObject_PathNotExists_Success() throws ObjectAlreadyExistsException {
         //given
-
+        boolean expected = true;
+        String path = "CPNV/PathNotExists/ToNoWhere";
         //when
-
+        dataObjectController.create(fileName,path);
+        boolean actual = dataObjectController.isExist(fileName,path);
         //then
+        assertEquals(expected, actual);
+        dataObjectController.delete(path+"/"+fileName);
     }
     @Test
     public void test_DownloadObject_NominalCase_Success() throws ObjectNotExistsException {
