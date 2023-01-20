@@ -3,6 +3,10 @@ package com.cpnv.BIJAVAGCP.Object;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import static org.assertj.core.api.Fail.fail;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -69,9 +73,10 @@ class DataObjectControllerTest {
     public void test_CreateObject_PathNotExists_Success() throws ObjectAlreadyExistsException {
         //given
         boolean expected = true;
-        String path = "CPNV/PathNotExists/ToNoWhere";
+        Path path = Paths.get("CPNV/PathNotExists/ToNoWhere");
+        
         //when
-        dataObjectController.create(fileName,path);
+        dataObjectController.create(fileName, path);
         boolean actual = dataObjectController.isExist(fileName,path);
         //then
         assertEquals(expected, actual);
