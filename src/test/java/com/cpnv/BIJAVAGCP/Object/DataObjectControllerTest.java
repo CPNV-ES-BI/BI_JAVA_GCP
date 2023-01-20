@@ -4,6 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -102,22 +103,21 @@ class DataObjectControllerTest {
     }
 
     @Test
-    public void test_PublishObject_NominalCase_Success() throws Exception {
-        fail("This test has yet to be implement");
+    public void test_PublishObject_NominalCase_Success() throws ObjectNotExistsException {
         //given
 
         //when
-
+        URI url = dataObjectController.publish(fileName);
         //then
+        assertNotNull(url);
     }
 
     @Test
     public void test_PublishObject_ObjectNotFound_ThrowException() throws Exception {
-        fail("This test has yet to be implement");
         //given
-
-        //when
-
+        String fileName2 = "test2.txt";
+        //when ;
         //then
+        assertThrows(ObjectNotExistsException.class, () -> dataObjectController.publish(fileName2));
     }
 }

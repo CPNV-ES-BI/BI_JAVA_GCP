@@ -3,8 +3,10 @@ package com.cpnv.BIJAVAGCP.Object;
 import com.google.api.gax.paging.Page;
 import com.google.cloud.storage.*;
 
+import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.TimeUnit;
 
 public class DataObjectController implements DataObject {
 
@@ -127,6 +129,20 @@ public class DataObjectController implements DataObject {
             blob.downloadTo(Paths.get(destination  + fileName));
             System.out.println("Blob " + fileName + " was downloaded.");
             return true;
+        }
+    }
+
+    public URI publish (String fileName) throws ObjectNotExistsException {
+        Storage storage = StorageOptions.getDefaultInstance().getService();
+        BlobId blobId = BlobId.of(BUCKET_NAME, fileName);
+        Blob blob = storage.get(blobId);
+        if (blob == null) {
+            System.out.println("Blob " + fileName + " does not exist.");
+            throw new ObjectNotExistsException("object does not exist");
+        } else {
+            URI url = URI.create(blob.signUrl(2, TimeUnit.DAYS).toString());
+            System.out.println("Blob " + fileName + " was published.");
+            return url;
         }
     }
 
