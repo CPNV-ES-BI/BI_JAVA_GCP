@@ -38,8 +38,8 @@ class DataObjectControllerTest {
         //given
         boolean expected = false;
         //when
-        fileName = "test2.txt";
-        boolean actual = dataObjectController.isExist(fileName);
+        String fileName2 = "test2.txt";
+        boolean actual = dataObjectController.isExist(fileName2);
         //then
         assertEquals(expected, actual);
     }
@@ -48,12 +48,11 @@ class DataObjectControllerTest {
         //given
         boolean expected = true;
         //when
-        fileName = "test2.txt";
+        dataObjectController.delete(fileName);
         dataObjectController.create(fileName);
         boolean actual = dataObjectController.isExist(fileName);
         //then
         assertEquals(expected, actual);
-        dataObjectController.delete(fileName);
     }
     @Test
     public void test_CreateObject_AlreadyExists_ThrowException() {
@@ -87,10 +86,10 @@ class DataObjectControllerTest {
     @Test
     public void test_DownloadObject_NotExists_ThrowException()  {
         //given
-        fileName = "test2.txt";
+        String fileName2 = "test2.txt";
         //when
         //then
-        assertThrows(ObjectNotExistsException.class, () -> dataObjectController.download(fileName,destination));
+        assertThrows(ObjectNotExistsException.class, () -> dataObjectController.download(fileName2,destination));
     }
 
     @Test
