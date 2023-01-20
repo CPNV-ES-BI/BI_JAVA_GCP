@@ -1,4 +1,4 @@
-package com.cpnv.BIJAVAGCP;
+package com.cpnv.BIJAVAGCP.Bucket;
 
 
 public interface DataBucket {

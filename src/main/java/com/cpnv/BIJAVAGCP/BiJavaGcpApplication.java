@@ -1,6 +1,6 @@
 package com.cpnv.BIJAVAGCP;
 
-import org.springframework.boot.SpringApplication;
+import com.cpnv.BIJAVAGCP.Object.DataObjectController;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class BiJavaGcpApplication {
 
-    public static void main(String[] args) {
+    public static void main(String[] args)  {
         //SpringApplication.run(BiJavaGcpApplication.class, args);
-        BucketController bucketController = new BucketController();
-        bucketController.list();
+        DataObjectController dataObjectController = new DataObjectController();
+        dataObjectController.list();
+
+        
 
     }
 
