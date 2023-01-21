@@ -1,28 +1,31 @@
 package com.cpnv.BIJAVAGCP.Object;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class DataObjectControllerTest {
 
-    private DataObjectController dataObjectController;
-    private String fileName;
-    private String content;
-    private String  destination;
+    private static DataObjectController dataObjectController;
+    private static String fileName;
+    private static String content;
+    private static String  destination;
 
-    @BeforeEach
-    void setUp() throws ObjectAlreadyExistsException {
+    @BeforeAll
+    static void setUpBeforeClass()  {
         dataObjectController = new DataObjectController();
         fileName = "test.txt";
         content = "Test content for object creation in GCP bucket for test purpose for BI Java course";
-        destination = "C:\\Users\\Robiel\\Downloads\\";
+        destination = "src/main/resources/";
+    }
+
+    @BeforeEach
+    void setUp() throws ObjectAlreadyExistsException {
         dataObjectController.create(fileName, content);
     }
     @AfterEach
@@ -75,8 +78,8 @@ class DataObjectControllerTest {
     public void test_CreateObject_PathNotExists_Success() throws ObjectAlreadyExistsException {
         //given
         boolean expected = true;
-        String path = "CPNV/PathNotExists/ToNoWhere";
-        
+        String path = "PathNotExists/ToNoWhere";
+
         //when
         dataObjectController.create(fileName, content, path);
         boolean actual = dataObjectController.isExist(fileName,path);
@@ -99,6 +102,7 @@ class DataObjectControllerTest {
         //given
         String fileName2 = "test2.txt";
         //when
+        assertFalse(dataObjectController.isExist(fileName2));
         //then
         assertThrows(ObjectNotExistsException.class, () -> dataObjectController.download(fileName2,destination));
     }
@@ -106,18 +110,19 @@ class DataObjectControllerTest {
     @Test
     public void test_PublishObject_NominalCase_Success() throws ObjectNotExistsException {
         //given
-
+        URI url;
         //when
-        URI url = dataObjectController.publish(fileName);
+        url = dataObjectController.publish(fileName);
         //then
         assertNotNull(url);
     }
 
     @Test
-    public void test_PublishObject_ObjectNotFound_ThrowException() throws Exception {
+    public void test_PublishObject_ObjectNotFound_ThrowException() {
         //given
         String fileName2 = "test2.txt";
-        //when ;
+        //when
+        assertFalse(dataObjectController.isExist(fileName2));
         //then
         assertThrows(ObjectNotExistsException.class, () -> dataObjectController.publish(fileName2));
     }
