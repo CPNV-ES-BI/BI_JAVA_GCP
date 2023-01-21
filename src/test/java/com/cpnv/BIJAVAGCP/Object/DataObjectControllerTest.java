@@ -8,21 +8,22 @@ import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.assertj.core.api.Fail.fail;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DataObjectControllerTest {
 
     private DataObjectController dataObjectController;
     private String fileName;
+    private String content;
     private String destination;
 
     @BeforeEach
     void setUp() throws ObjectAlreadyExistsException {
         dataObjectController = new DataObjectController();
         fileName = "test.txt";
+        content = "Test content for object creation in GCP bucket for test purpose for BI Java course";
         destination = "C:\\Users\\Robiel\\Downloads";
-        dataObjectController.create(fileName);
+        dataObjectController.create(fileName, content);
     }
     @AfterEach
     void tearDown() {
@@ -54,7 +55,7 @@ class DataObjectControllerTest {
         boolean expected = true;
         //when
         dataObjectController.delete(fileName);
-        dataObjectController.create(fileName);
+        dataObjectController.create(fileName, content);
         boolean actual = dataObjectController.isExist(fileName);
         //then
         assertEquals(expected, actual);
@@ -68,16 +69,16 @@ class DataObjectControllerTest {
         boolean actual = dataObjectController.isExist(fileName);
         //then
         assertEquals(expected, actual);
-        assertThrows(ObjectAlreadyExistsException.class, () -> dataObjectController.create(fileName));
+        assertThrows(ObjectAlreadyExistsException.class, () -> dataObjectController.create(fileName, content));
     }
     @Test
     public void test_CreateObject_PathNotExists_Success() throws ObjectAlreadyExistsException {
         //given
         boolean expected = true;
-        Path path = Paths.get("CPNV/PathNotExists/ToNoWhere");
+        String path = "CPNV/PathNotExists/ToNoWhere";
         
         //when
-        dataObjectController.create(fileName, path);
+        dataObjectController.create(fileName, content, path);
         boolean actual = dataObjectController.isExist(fileName,path);
         //then
         assertEquals(expected, actual);

@@ -20,18 +20,6 @@ public class DataObjectController implements DataObject {
         }
     }
 
-    public void create(String fileName) throws ObjectAlreadyExistsException {
-        Storage storage = StorageOptions.getDefaultInstance().getService();
-        BlobId blobId = BlobId.of(BUCKET_NAME, fileName);
-        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
-        if (isExist(fileName)){
-           System.out.println(  "Blob " + fileName + " already exists.");
-            throw new ObjectAlreadyExistsException("object already exist");
-        }else{
-            Blob blob = storage.create(blobInfo, "Hello, World!".getBytes());
-            System.out.println("Blob " + blob.getName() + " was created: " + blob.getCreateTime());
-        }
-    }
     public void create (String fileName, String content) throws ObjectAlreadyExistsException {
         Storage storage = StorageOptions.getDefaultInstance().getService();
         BlobId blobId = BlobId.of(BUCKET_NAME,  fileName);
@@ -44,20 +32,8 @@ public class DataObjectController implements DataObject {
             System.out.println("Blob " + blob.getName() + " was created: " + blob.getCreateTime());
         }
     }
-    public void create(String fileName, Path path) throws ObjectAlreadyExistsException {
-        Storage storage = StorageOptions.getDefaultInstance().getService();
-        BlobId blobId = BlobId.of(BUCKET_NAME, path + "/" + fileName);
-        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
-        if (isExist(path+"/"+fileName)){
-           System.out.println(  "Blob " + fileName + " already exists.");
-            throw new ObjectAlreadyExistsException("object already exist");
-        }else{
-            Blob blob = storage.create(blobInfo, "Hello, World!".getBytes());
-            System.out.println("Blob " + blob.getName() + " was created: " + blob.getCreateTime());
-        }
-    }
 
-    public void create (String fileName, String path, String content) throws ObjectAlreadyExistsException {
+    public void create (String fileName, String content, String path) throws ObjectAlreadyExistsException {
         Storage storage = StorageOptions.getDefaultInstance().getService();
         BlobId blobId = BlobId.of(BUCKET_NAME, path + "/" + fileName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
@@ -67,17 +43,6 @@ public class DataObjectController implements DataObject {
         }else{
             Blob blob = storage.create(blobInfo, content.getBytes());
             System.out.println("Blob " + blob.getName() + " was created: " + blob.getCreateTime());
-        }
-    }
-
-    public void read(String fileName) {
-        Storage storage = StorageOptions.getDefaultInstance().getService();
-        BlobId blobId = BlobId.of(BUCKET_NAME, fileName);
-        Blob blob = storage.get(blobId);
-        if (blob == null) {
-            System.out.println("Blob " + fileName + " does not exist.");
-        } else {
-            System.out.println(new String(blob.getContent()));
         }
     }
 
@@ -94,7 +59,7 @@ public class DataObjectController implements DataObject {
         }
     }
 
-    public boolean isExist(String fileName, Path path){
+    public boolean isExist(String fileName, String path){
         Storage storage = StorageOptions.getDefaultInstance().getService();
         BlobId blobId = BlobId.of(BUCKET_NAME, path + "/" + fileName);
         Blob blob = storage.get(blobId);
