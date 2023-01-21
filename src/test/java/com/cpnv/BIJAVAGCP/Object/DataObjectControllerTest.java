@@ -62,7 +62,7 @@ class DataObjectControllerTest {
         assertEquals(expected, actual);
     }
     @Test
-    public void CreateObject_NominalCase_ObjectExists() throws Exception {
+    public void test_CreateObject_NominalCase_ObjectExists() throws Exception {
         //given
         boolean expected = true;
         //when
@@ -135,4 +135,35 @@ class DataObjectControllerTest {
         //then
         assertThrows(ObjectNotExistsException.class, () -> dataObjectController.publish(fileName2));
     }
+
+    @Test
+    public void test_DeleteObject_ObjectExists_ObjectDeleted(){
+        //given
+        boolean actual = dataObjectController.isExist(fileName);
+        //when
+        dataObjectController.delete(fileName);
+        boolean expected = dataObjectController.isExist(fileName);
+        //then
+        assertNotEquals(expected, actual);
+    }
+    @Test
+    public void test_DeleteObject_ObjectContainingSubObjectsExists_ObjectDeletedRecursively()throws Exception {
+        fail("This test has yet to be implement");
+        //given
+
+        //when
+
+        //then
+    }
+
+    @Test
+    public void test_DeleteObject_ObjectDoesntExist_ThrowException()throws Exception {
+        fail("This test has yet to be implement");
+        //given
+
+        //when
+
+        //then
+    }
+
 }
