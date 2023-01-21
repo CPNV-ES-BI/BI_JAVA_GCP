@@ -1,25 +1,25 @@
 package com.cpnv.BIJAVAGCP.Object;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
+import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class DataObjectControllerTest {
 
     private static DataObjectController dataObjectController;
-    private static String fileName;
-    private static String content;
-    private static String  destination;
+    private static String fileName, fileName2, content,destination;
 
     @BeforeAll
     static void setUpBeforeClass()  {
         dataObjectController = new DataObjectController();
         fileName = "test.txt";
+        fileName2 = "test2.txt";
         content = "Test content for object creation in GCP bucket for test purpose for BI Java course";
         destination = "src/main/resources/";
     }
@@ -32,6 +32,15 @@ class DataObjectControllerTest {
     void tearDown() {
         dataObjectController.delete(fileName);
     }
+
+    @AfterAll
+    static void tearDownAfterClass() throws IOException {
+        Path path = Paths.get(destination + fileName);
+        if (Files.exists(path)) {
+            Files.delete(path);
+        }
+    }
+
     @Test
     public void test_DoesExist_ExistsCase_True (){
 
@@ -46,8 +55,8 @@ class DataObjectControllerTest {
     public void test_DoesExist_NotExists_False() {
         //given
         boolean expected = false;
+        fileName2 = "test2.txt";
         //when
-        String fileName2 = "test2.txt";
         boolean actual = dataObjectController.isExist(fileName2);
         //then
         assertEquals(expected, actual);
@@ -100,7 +109,7 @@ class DataObjectControllerTest {
     @Test
     public void test_DownloadObject_NotExists_ThrowException()  {
         //given
-        String fileName2 = "test2.txt";
+        fileName2 = "test2.txt";
         //when
         assertFalse(dataObjectController.isExist(fileName2));
         //then
@@ -120,7 +129,7 @@ class DataObjectControllerTest {
     @Test
     public void test_PublishObject_ObjectNotFound_ThrowException() {
         //given
-        String fileName2 = "test2.txt";
+        fileName2 = "test2.txt";
         //when
         assertFalse(dataObjectController.isExist(fileName2));
         //then
