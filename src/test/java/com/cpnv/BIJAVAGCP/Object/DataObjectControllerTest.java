@@ -15,14 +15,14 @@ class DataObjectControllerTest {
     private DataObjectController dataObjectController;
     private String fileName;
     private String content;
-    private String destination;
+    private String  destination;
 
     @BeforeEach
     void setUp() throws ObjectAlreadyExistsException {
         dataObjectController = new DataObjectController();
         fileName = "test.txt";
         content = "Test content for object creation in GCP bucket for test purpose for BI Java course";
-        destination = "C:\\Users\\Robiel\\Downloads";
+        destination = "C:\\Users\\Robiel\\Downloads\\";
         dataObjectController.create(fileName, content);
     }
     @AfterEach

@@ -20,13 +20,11 @@ public class BucketController  implements DataBucket {
 
     public void create(String bucketName) {
         Storage storage = StorageOptions.getDefaultInstance().getService();
-        Bucket bucket = storage.create(BucketInfo.of(bucketName));
-        System.out.println("Bucket " + bucket.getName() + " was created: " + bucket.getCreateTime());
+        storage.create(BucketInfo.of(bucketName));
     }
     //delete bucket
     public void delete(String bucketName) {
         Storage storage = StorageOptions.getDefaultInstance().getService();
-        boolean deleted = storage.delete(bucketName);
-        System.out.println("Bucket " + bucketName + " was deleted: " + deleted);
+        storage.delete(bucketName);
     }
 }
