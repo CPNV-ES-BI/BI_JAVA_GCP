@@ -1,7 +1,6 @@
 package com.cpnv.BIJAVAGCP.Object;
 
 import java.net.URI;
-import java.nio.file.Path;
 
 public interface DataObject {
 
