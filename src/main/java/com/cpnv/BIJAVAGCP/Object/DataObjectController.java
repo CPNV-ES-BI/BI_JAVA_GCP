@@ -53,9 +53,12 @@ public class DataObjectController implements DataObject {
         return blob != null;
     }
 
-    public void delete(String fileName) {
+    public void delete(String fileName) throws ObjectNotExistsException {
         BlobId blobId = BlobId.of(BUCKET_NAME, fileName);
-        storage.delete(blobId);
+        if (!isExist(fileName)) throw new ObjectNotExistsException(fileName);
+        else{
+            storage.delete(blobId);
+        }
     }
 
     public boolean download(String fileName, String destination) throws ObjectNotExistsException {

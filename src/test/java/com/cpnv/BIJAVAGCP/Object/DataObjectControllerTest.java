@@ -29,7 +29,7 @@ class DataObjectControllerTest {
         dataObjectController.create(fileName, content);
     }
     @AfterEach
-    void tearDown() {
+    void tearDown() throws ObjectNotExistsException {
         dataObjectController.delete(fileName);
     }
 
@@ -84,7 +84,7 @@ class DataObjectControllerTest {
         assertThrows(ObjectAlreadyExistsException.class, () -> dataObjectController.create(fileName, content));
     }
     @Test
-    public void test_CreateObject_PathNotExists_Success() throws ObjectAlreadyExistsException {
+    public void test_CreateObject_PathNotExists_Success() throws ObjectAlreadyExistsException, ObjectNotExistsException {
         //given
         boolean expected = true;
         String path = "PathNotExists/ToNoWhere";
@@ -137,12 +137,13 @@ class DataObjectControllerTest {
     }
 
     @Test
-    public void test_DeleteObject_ObjectExists_ObjectDeleted(){
+    public void test_DeleteObject_ObjectExists_ObjectDeleted() throws ObjectNotExistsException, ObjectNotExistsException, ObjectAlreadyExistsException {
         //given
-        boolean actual = dataObjectController.isExist(fileName);
+        dataObjectController.create(fileName2, content);
+        boolean actual = dataObjectController.isExist(fileName2);
         //when
-        dataObjectController.delete(fileName);
-        boolean expected = dataObjectController.isExist(fileName);
+        dataObjectController.delete(fileName2);
+        boolean expected = dataObjectController.isExist(fileName2);
         //then
         assertNotEquals(expected, actual);
     }
@@ -157,13 +158,14 @@ class DataObjectControllerTest {
     }
 
     @Test
-    public void test_DeleteObject_ObjectDoesntExist_ThrowException()throws Exception {
-        fail("This test has yet to be implement");
+    public void test_DeleteObject_ObjectDoesntExist_ThrowException() throws ObjectNotExistsException {
         //given
-
+        boolean expected = false;
         //when
-
+        boolean actual = dataObjectController.isExist(fileName2);
         //then
+        assertEquals(expected, actual);
+        assertThrows(ObjectNotExistsException.class, () -> dataObjectController.delete(fileName2));
     }
 
 }
