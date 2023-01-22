@@ -3,8 +3,11 @@ FROM openjdk:17-jdk-alpine as base
 WORKDIR /app
 COPY ./.mvn .mvn
 COPY ./mvnw pom.xml ./
-RUN chmod +x ./mvnw && ./mvnw dependency:resolve
+RUN chmod +x ./mvnw
+RUN sed -i 's/\r$//' mvnw
+RUN ./mvnw dependency:go-offline -B
 COPY ./src ./src
+RUN ./mvnw compile
 
 FROM base as test
 CMD ["./mvnw", "test"]
