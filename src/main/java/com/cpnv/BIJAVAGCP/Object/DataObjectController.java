@@ -61,6 +61,15 @@ public class DataObjectController implements DataObject {
         }
     }
 
+    public void deleteRecursively(String folderName) {
+        Page<Blob> blobs = storage.list(BUCKET_NAME);
+        for (Blob blob : blobs.iterateAll()) {
+            if (blob.getName().startsWith(folderName)) {
+                storage.delete(blob.getBlobId());
+            }
+        }
+    }
+
     public boolean download(String fileName, String destination) throws ObjectNotExistsException {
         BlobId blobId = BlobId.of(BUCKET_NAME, fileName);
         Blob blob = storage.get(blobId);
