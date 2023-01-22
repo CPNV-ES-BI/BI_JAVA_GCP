@@ -31,4 +31,7 @@ jobs:
       -
         name: Build the Docker image
         run: docker build . --tag bi_java_gcp-test --file Dockerfile --target test
+      - 
+        name: Run the integrations tests
+        run: docker run bi_java_gcp-test:latest
 
