@@ -68,7 +68,7 @@ To make this work, you add to separate the class name from the method name with 
 
 First, you can build the production image with the following command:
 ```
-docker build --no-cache -t cpnv/hello-world-microservice-base .
+docker compose development--no-cache
 ```
 
 This command build an image in the docker and specify the target to build.
@@ -76,7 +76,7 @@ The target is the stage of the dockerfile. In this case, the target is the base 
 
 Then, you can build the test image with the following command:
 ```
-docker build --no-cache -t cpnv/hello-world-microservice-test --target test .
+docker compose test --no-cache
 ```
 
 ## Run the docker image
@@ -89,7 +89,7 @@ docker run -it --rm --name hello-world-base cpnv/hello-world-microservice-base
 ### Run the test image
 
 ```
-docker run -it --rm cpnv/hello-world-microservice-test
+docker compose up development
 ```
 
 This command starts the image and run it as a container.
