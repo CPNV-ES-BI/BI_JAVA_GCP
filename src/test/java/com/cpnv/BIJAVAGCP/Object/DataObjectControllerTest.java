@@ -45,7 +45,7 @@ class DataObjectControllerTest {
         //given
         boolean expected = true;
         //when
-        boolean actual = dataObjectController.isExist(fileName);
+        boolean actual = dataObjectController.doesExist(fileName);
         //then
         assertEquals(expected, actual);
     }
@@ -55,7 +55,7 @@ class DataObjectControllerTest {
         boolean expected = false;
         fileName2 = "test2.txt";
         //when
-        boolean actual = dataObjectController.isExist(fileName2);
+        boolean actual = dataObjectController.doesExist(fileName2);
         //then
         assertEquals(expected, actual);
     }
@@ -65,7 +65,7 @@ class DataObjectControllerTest {
         boolean expected = true;
         //when
         dataObjectController.create(fileName2, content);
-        boolean actual = dataObjectController.isExist(fileName2);
+        boolean actual = dataObjectController.doesExist(fileName2);
         dataObjectController.delete(fileName2);
         //then
         assertEquals(expected, actual);
@@ -75,7 +75,7 @@ class DataObjectControllerTest {
         //given
         boolean expected = true;
         //when
-        boolean actual = dataObjectController.isExist(fileName);
+        boolean actual = dataObjectController.doesExist(fileName);
         //then
         assertEquals(expected, actual);
         assertThrows(ObjectAlreadyExistsException.class, () -> dataObjectController.create(fileName, content));
@@ -88,7 +88,7 @@ class DataObjectControllerTest {
 
         //when
         dataObjectController.create(fileName, content, path);
-        boolean actual = dataObjectController.isExist(fileName,path);
+        boolean actual = dataObjectController.doesExist(fileName,path);
         //then
         assertEquals(expected, actual);
         dataObjectController.delete(path+"/"+fileName);
@@ -107,7 +107,7 @@ class DataObjectControllerTest {
         //given
         fileName2 = "test2.txt";
         //when
-        assertFalse(dataObjectController.isExist(fileName2));
+        assertFalse(dataObjectController.doesExist(fileName2));
         //then
         assertThrows(ObjectNotExistsException.class, () -> dataObjectController.download(fileName2,destination));
     }
@@ -125,7 +125,7 @@ class DataObjectControllerTest {
         //given
         fileName2 = "test2.txt";
         //when
-        assertFalse(dataObjectController.isExist(fileName2));
+        assertFalse(dataObjectController.doesExist(fileName2));
         //then
         assertThrows(ObjectNotExistsException.class, () -> dataObjectController.publish(fileName2));
     }
@@ -133,10 +133,10 @@ class DataObjectControllerTest {
     public void test_DeleteObject_ObjectExists_ObjectDeleted() throws ObjectNotExistsException, ObjectAlreadyExistsException {
         //given
         dataObjectController.create(fileName2, content);
-        boolean actual = dataObjectController.isExist(fileName2);
+        boolean actual = dataObjectController.doesExist(fileName2);
         //when
         dataObjectController.delete(fileName2);
-        boolean expected = dataObjectController.isExist(fileName2);
+        boolean expected = dataObjectController.doesExist(fileName2);
         //then
         assertNotEquals(expected, actual);
     }
@@ -147,13 +147,13 @@ class DataObjectControllerTest {
         String containPath = "level1/level2/level3/level4/level5";
         dataObjectController.create(fileName,content,containPath);
         dataObjectController.create(fileName2,content,containPath);
-        boolean actual1 = dataObjectController.isExist(fileName2,containPath);
-        boolean actual2 = dataObjectController.isExist(fileName,containPath);
+        boolean actual1 = dataObjectController.doesExist(fileName2,containPath);
+        boolean actual2 = dataObjectController.doesExist(fileName,containPath);
 
         //when
         dataObjectController.deleteRecursively(containPath);
-        boolean expected1 = dataObjectController.isExist(fileName2,containPath);
-        boolean expected2 = dataObjectController.isExist(fileName,containPath);
+        boolean expected1 = dataObjectController.doesExist(fileName2,containPath);
+        boolean expected2 = dataObjectController.doesExist(fileName,containPath);
 
         //then
         assertNotEquals(expected1, actual1);
@@ -165,7 +165,7 @@ class DataObjectControllerTest {
         //given
         boolean expected = false;
         //when
-        boolean actual = dataObjectController.isExist(fileName2);
+        boolean actual = dataObjectController.doesExist(fileName2);
         //then
         assertEquals(expected, actual);
         assertThrows(ObjectNotExistsException.class, () -> dataObjectController.delete(fileName2));

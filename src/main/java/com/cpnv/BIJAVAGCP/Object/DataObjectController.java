@@ -26,7 +26,7 @@ public class DataObjectController implements DataObject {
     public void create (String fileName, String content) throws ObjectAlreadyExistsException {
         BlobId blobId = BlobId.of(BUCKET_NAME,  fileName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
-        if (isExist(fileName)) throw new ObjectAlreadyExistsException(fileName);
+        if (doesExist(fileName)) throw new ObjectAlreadyExistsException(fileName);
         else{
             storage.create(blobInfo, content.getBytes());
         }
@@ -35,19 +35,19 @@ public class DataObjectController implements DataObject {
     public void create (String fileName, String content, String path) throws ObjectAlreadyExistsException {
         BlobId blobId = BlobId.of(BUCKET_NAME, path + "/" + fileName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
-        if (isExist(path+"/"+fileName)) throw new ObjectAlreadyExistsException(fileName);
+        if (doesExist(path+"/"+fileName)) throw new ObjectAlreadyExistsException(fileName);
         else{
             storage.create(blobInfo, content.getBytes());
         }
     }
 
-    public boolean isExist(String fileName){
+    public boolean doesExist(String fileName){
         BlobId blobId = BlobId.of(BUCKET_NAME, fileName);
         Blob blob = storage.get(blobId);
         return blob != null;
     }
 
-    public boolean isExist(String fileName, String path){
+    public boolean doesExist(String fileName, String path){
         BlobId blobId = BlobId.of(BUCKET_NAME, path + "/" + fileName);
         Blob blob = storage.get(blobId);
         return blob != null;
@@ -55,7 +55,7 @@ public class DataObjectController implements DataObject {
 
     public void delete(String fileName) throws ObjectNotExistsException {
         BlobId blobId = BlobId.of(BUCKET_NAME, fileName);
-        if (!isExist(fileName)) throw new ObjectNotExistsException(fileName);
+        if (!doesExist(fileName)) throw new ObjectNotExistsException(fileName);
         else{
             storage.delete(blobId);
         }
