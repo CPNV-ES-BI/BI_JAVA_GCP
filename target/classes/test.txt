@@ -1,1 +1,0 @@
-Test content for object creation in GCP bucket for test purpose for BI Java course
