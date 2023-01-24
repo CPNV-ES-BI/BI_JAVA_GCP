@@ -15,14 +15,16 @@ public class DataObjectController implements DataObject {
     public DataObjectController() {
         storage = StorageOptions.getDefaultInstance().getService();
     }
-
+    private Blob getBlob(String fileName) {
+        BlobId blobId = BlobId.of(BUCKET_NAME, fileName);
+        return storage.get(blobId);
+    }
     public void list() {
         Page<Blob> blobs = storage.list(BUCKET_NAME);
         for (Blob blob : blobs.iterateAll()) {
             System.out.println(blob.getName());
         }
     }
-
     public void create (String fileName, String content) throws ObjectAlreadyExistsException {
         BlobId blobId = BlobId.of(BUCKET_NAME,  fileName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
@@ -31,7 +33,6 @@ public class DataObjectController implements DataObject {
             storage.create(blobInfo, content.getBytes());
         }
     }
-
     public void create (String fileName, String content, String path) throws ObjectAlreadyExistsException {
         BlobId blobId = BlobId.of(BUCKET_NAME, path + "/" + fileName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
@@ -40,19 +41,15 @@ public class DataObjectController implements DataObject {
             storage.create(blobInfo, content.getBytes());
         }
     }
-
     public boolean doesExist(String fileName){
-        BlobId blobId = BlobId.of(BUCKET_NAME, fileName);
-        Blob blob = storage.get(blobId);
+        Blob blob = getBlob(fileName);
         return blob != null;
     }
-
     public boolean doesExist(String fileName, String path){
         BlobId blobId = BlobId.of(BUCKET_NAME, path + "/" + fileName);
         Blob blob = storage.get(blobId);
         return blob != null;
     }
-
     public void delete(String fileName) throws ObjectNotExistsException {
         BlobId blobId = BlobId.of(BUCKET_NAME, fileName);
         if (!doesExist(fileName)) throw new ObjectNotExistsException(fileName);
@@ -60,7 +57,6 @@ public class DataObjectController implements DataObject {
             storage.delete(blobId);
         }
     }
-
     public void deleteRecursively(String folderName) {
         Page<Blob> blobs = storage.list(BUCKET_NAME);
         for (Blob blob : blobs.iterateAll()) {
@@ -69,24 +65,19 @@ public class DataObjectController implements DataObject {
             }
         }
     }
-
     public boolean download(String fileName, String destination) throws ObjectNotExistsException {
-        BlobId blobId = BlobId.of(BUCKET_NAME, fileName);
-        Blob blob = storage.get(blobId);
+        Blob blob = getBlob(fileName);
         if (blob == null)  throw new ObjectNotExistsException(fileName);
         else {
             blob.downloadTo(Paths.get(destination  + fileName));
             return true;
         }
     }
-
     public URI publish (String fileName) throws ObjectNotExistsException {
-        BlobId blobId = BlobId.of(BUCKET_NAME, fileName);
-        Blob blob = storage.get(blobId);
+        Blob blob = getBlob(fileName);
         if (blob == null) throw new ObjectNotExistsException(fileName);
         else {
             return URI.create(blob.signUrl(2, TimeUnit.DAYS).toString());
         }
     }
-
 }
