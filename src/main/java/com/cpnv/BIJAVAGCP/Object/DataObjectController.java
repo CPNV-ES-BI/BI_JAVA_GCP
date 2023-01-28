@@ -42,7 +42,6 @@ public class DataObjectController implements DataObject {
             storage.create(blobInfo, content.getBytes());
         }
     }
-
     public boolean doesExist(String fileName, @Nullable String... path) {
         String fullPath;
         if (path == null || path.length == 0) {
@@ -53,8 +52,6 @@ public class DataObjectController implements DataObject {
         Blob blob = getBlob(fullPath);
         return blob != null;
     }
-
-
     public void delete(String fileName) throws ObjectNotExistsException {
         Blob blob = getBlob(fileName);
         if (!doesExist(fileName)) throw new ObjectNotExistsException(fileName);
@@ -62,11 +59,17 @@ public class DataObjectController implements DataObject {
             blob.delete();
         }
     }
-    public void deleteRecursively(String folderName) {
-        Page<Blob> blobs = storage.list(BUCKET_NAME);
-        for (Blob blob : blobs.iterateAll()) {
-            if (blob.getName().startsWith(folderName)) {
-                storage.delete(blob.getBlobId());
+    public void delete(String folderName,boolean recursive) {
+        Page<Blob> blobs = storage.list(BUCKET_NAME, Storage.BlobListOption.prefix(folderName));
+        if (recursive) {
+            for (Blob blob : blobs.iterateAll()) {
+                blob.delete();
+            }
+        } else {
+           for (Blob blob : blobs.iterateAll()) {
+                if (blob.getName().equals(folderName)) {
+                    blob.delete();
+                }
             }
         }
     }

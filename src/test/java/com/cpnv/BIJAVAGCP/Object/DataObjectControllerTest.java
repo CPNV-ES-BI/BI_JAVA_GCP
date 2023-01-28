@@ -142,7 +142,7 @@ class DataObjectControllerTest {
         boolean actual1 = object.doesExist(fileName2,containPath);
         boolean actual2 = object.doesExist(fileName,containPath);
         //when
-        object.deleteRecursively(containPath);
+        object.delete(containPath, true);
         boolean expected1 = object.doesExist(fileName2,containPath);
         boolean expected2 = object.doesExist(fileName,containPath);
         //then

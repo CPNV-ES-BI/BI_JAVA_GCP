@@ -9,7 +9,7 @@ public interface DataObject {
     void create(String fileName,String content,String path) throws ObjectAlreadyExistsException;
     boolean doesExist(String fileName, String... path);
     void delete(String fileName) throws ObjectNotExistsException;
-    void deleteRecursively(String path) throws ObjectNotExistsException;
+    void delete(String fileName, boolean recursive) throws ObjectNotExistsException;
     boolean download(String fileName, String  destination) throws ObjectNotExistsException;
     URI publish (String fileName) throws ObjectNotExistsException;
 }
