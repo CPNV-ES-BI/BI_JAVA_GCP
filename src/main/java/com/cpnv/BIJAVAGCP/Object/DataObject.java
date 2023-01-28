@@ -7,8 +7,7 @@ public interface DataObject {
     void list();
     void create(String fileName,String content) throws ObjectAlreadyExistsException;
     void create(String fileName,String content,String path) throws ObjectAlreadyExistsException;
-    boolean doesExist(String fileName);
-    boolean doesExist(String fileName, String path);
+    boolean doesExist(String fileName, String... path);
     void delete(String fileName) throws ObjectNotExistsException;
     void deleteRecursively(String path) throws ObjectNotExistsException;
     boolean download(String fileName, String  destination) throws ObjectNotExistsException;

@@ -3,6 +3,7 @@ package com.cpnv.BIJAVAGCP.Object;
 import com.google.api.gax.paging.Page;
 import com.google.cloud.storage.*;
 
+import javax.annotation.Nullable;
 import java.net.URI;
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
@@ -41,20 +42,24 @@ public class DataObjectController implements DataObject {
             storage.create(blobInfo, content.getBytes());
         }
     }
-    public boolean doesExist(String fileName){
-        Blob blob = getBlob(fileName);
+
+    public boolean doesExist(String fileName, @Nullable String... path) {
+        String fullPath;
+        if (path == null || path.length == 0) {
+            fullPath = fileName;
+        } else {
+            fullPath = String.join("/", path) + "/" + fileName;
+        }
+        Blob blob = getBlob(fullPath);
         return blob != null;
     }
-    public boolean doesExist(String fileName, String path){
-        BlobId blobId = BlobId.of(BUCKET_NAME, path + "/" + fileName);
-        Blob blob = storage.get(blobId);
-        return blob != null;
-    }
+
+
     public void delete(String fileName) throws ObjectNotExistsException {
-        BlobId blobId = BlobId.of(BUCKET_NAME, fileName);
+        Blob blob = getBlob(fileName);
         if (!doesExist(fileName)) throw new ObjectNotExistsException(fileName);
         else{
-            storage.delete(blobId);
+            blob.delete();
         }
     }
     public void deleteRecursively(String folderName) {
