@@ -10,24 +10,31 @@ import java.util.concurrent.TimeUnit;
 
 public class DataObjectController implements DataObject {
 
-    public final String BUCKET_NAME = "bi.java.cld.education";
+    private String bucketName;
     private final Storage storage;
 
     public DataObjectController() {
         storage = StorageOptions.getDefaultInstance().getService();
     }
+
+    public String getBucketName() {
+        return bucketName;
+    }
+    public void setBucketName(String bucketName) {
+        this.bucketName = bucketName;
+    }
     private Blob getBlob(String fileName) {
-        BlobId blobId = BlobId.of(BUCKET_NAME, fileName);
+        BlobId blobId = BlobId.of(bucketName, fileName);
         return storage.get(blobId);
     }
     public void list() {
-        Page<Blob> blobs = storage.list(BUCKET_NAME);
+        Page<Blob> blobs = storage.list(bucketName);
         for (Blob blob : blobs.iterateAll()) {
             System.out.println(blob.getName());
         }
     }
     public void create (String fileName, String content) throws ObjectAlreadyExistsException {
-        BlobId blobId = BlobId.of(BUCKET_NAME,  fileName);
+        BlobId blobId = BlobId.of(bucketName,  fileName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
         if (doesExist(fileName)) throw new ObjectAlreadyExistsException(fileName);
         else{
@@ -35,7 +42,7 @@ public class DataObjectController implements DataObject {
         }
     }
     public void create (String fileName, String content, String path) throws ObjectAlreadyExistsException {
-        BlobId blobId = BlobId.of(BUCKET_NAME, path + "/" + fileName);
+        BlobId blobId = BlobId.of(bucketName, path + "/" + fileName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
         if (doesExist(path+"/"+fileName)) throw new ObjectAlreadyExistsException(fileName);
         else{
@@ -60,7 +67,7 @@ public class DataObjectController implements DataObject {
         }
     }
     public void delete(String folderName,boolean recursive) {
-        Page<Blob> blobs = storage.list(BUCKET_NAME, Storage.BlobListOption.prefix(folderName));
+        Page<Blob> blobs = storage.list(bucketName, Storage.BlobListOption.prefix(folderName));
         if (recursive) {
             for (Blob blob : blobs.iterateAll()) {
                 blob.delete();

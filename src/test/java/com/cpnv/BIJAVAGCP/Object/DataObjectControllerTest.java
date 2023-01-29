@@ -18,6 +18,7 @@ class DataObjectControllerTest {
     @BeforeAll
     static void setUpBeforeClass()  {
         object = new DataObjectController();
+        object.setBucketName("bi.java.cld.education");
         fileName = "test.txt";
         fileName2 = "test2.txt";
         content = "Test content for object creation in GCP bucket for test purpose for BI Java course";

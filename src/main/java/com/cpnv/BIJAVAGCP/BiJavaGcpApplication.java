@@ -14,6 +14,7 @@ public class BiJavaGcpApplication {
     public static void main(String[] args) throws ObjectAlreadyExistsException, ObjectNotExistsException {
         //SpringApplication.run(BiJavaGcpApplication.class, args);
         DataObjectController object = new DataObjectController();
+        object.setBucketName("bi.java.cld.education");
         object.list();
     }
     @GetMapping("/")
