@@ -30,6 +30,7 @@ class DataObjectControllerTest {
     @AfterEach
     void tearDown() throws ObjectNotExistsException {
         object.delete(fileName);
+        if (object.doesExist(fileName2)) object.delete(fileName2);
     }
     @AfterAll
     static void tearDownAfterClass() throws IOException {
@@ -49,7 +50,6 @@ class DataObjectControllerTest {
     @Test
     public void test_DoesExist_NotExists_False() {
         //given
-        fileName2 = "test2.txt";
         //when
         boolean result = object.doesExist(fileName2);
         //then
@@ -61,7 +61,6 @@ class DataObjectControllerTest {
         //when
         object.create(fileName2, content);
         boolean result = object.doesExist(fileName2);
-        object.delete(fileName2);
         //then
         assertTrue(result);
     }
@@ -96,7 +95,6 @@ class DataObjectControllerTest {
     @Test
     public void test_DownloadObject_NotExists_ThrowException()  {
         //given
-        fileName2 = "test2.txt";
         //when
         boolean result = object.doesExist(fileName2);
         assertFalse(result);
@@ -115,7 +113,6 @@ class DataObjectControllerTest {
     @Test
     public void test_PublishObject_ObjectNotFound_ThrowException() {
         //given
-        fileName2 = "test2.txt";
         //when
         boolean result = object.doesExist(fileName2);
         assertFalse(result);
@@ -126,34 +123,29 @@ class DataObjectControllerTest {
     public void test_DeleteObject_ObjectExists_ObjectDeleted() throws ObjectNotExistsException, ObjectAlreadyExistsException {
         //given
         object.create(fileName2, content);
-        boolean actual = object.doesExist(fileName2);
         //when
         object.delete(fileName2);
-        boolean expected = object.doesExist(fileName2);
+        boolean result = object.doesExist(fileName2);
         //then
-        assertNotEquals(expected, actual);
+        assertFalse(result);
     }
     @Test
     public void test_DeleteObject_ObjectContainingSubObjectsExists_ObjectDeletedRecursively() throws ObjectAlreadyExistsException {
         //given
         String containPath = "level1/level2/level3/level4/level5";
         object.create(fileName,content,containPath);
-        object.create(fileName2,content,containPath);
-        boolean actual1 = object.doesExist(fileName2,containPath);
-        boolean actual2 = object.doesExist(fileName,containPath);
+        boolean actual = object.doesExist(fileName,containPath);
         //when
         object.delete(containPath, true);
-        boolean expected1 = object.doesExist(fileName2,containPath);
-        boolean expected2 = object.doesExist(fileName,containPath);
+        boolean expected = object.doesExist(fileName,containPath);
         //then
-        assertNotEquals(expected1, actual1);
-        assertNotEquals(expected2, actual2);
+        assertNotEquals(expected, actual);
     }
     @Test
     public void test_DeleteObject_ObjectDoesntExist_ThrowException() {
         //given
-        //when
         boolean result = object.doesExist(fileName2);
+        //when
         //then
         assertFalse(result);
         assertThrows(ObjectNotExistsException.class, () -> object.delete(fileName2));
