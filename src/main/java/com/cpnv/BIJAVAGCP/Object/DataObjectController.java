@@ -17,7 +17,6 @@ public class DataObjectController implements DataObject {
     public DataObjectController() {
         storage = StorageOptions.getDefaultInstance().getService();
     }
-
     public String getBucketName() {
         return bucketName;
     }
@@ -84,11 +83,11 @@ public class DataObjectController implements DataObject {
             }
         }
     }
-    public boolean download(String objectName, String destination) throws ObjectNotFoundException {
+    public boolean download(String objectName, String path) throws ObjectNotFoundException {
         Blob blob = getBlob(objectName);
         if (blob == null)  throw new ObjectNotFoundException(objectName);
         else {
-            blob.downloadTo(Paths.get(destination  + objectName));
+            blob.downloadTo(Paths.get(path  + objectName));
             return true;
         }
     }

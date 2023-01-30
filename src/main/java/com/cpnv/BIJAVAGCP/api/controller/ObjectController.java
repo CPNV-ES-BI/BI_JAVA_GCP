@@ -16,7 +16,7 @@ public class ObjectController {
         object = new DataObjectController();
         object.setBucketName("bi.java.cld.education");
     }
-    @GetMapping("/objects") //index
+    @GetMapping("/objects")
     public LinkedList<String> getList() {
         return object.list();
     }
@@ -35,7 +35,6 @@ public class ObjectController {
             return name + " does not exist";
         }
     }
-
     @DeleteMapping("/objects/")
     public String deleteObject(@RequestParam String name) throws ObjectNotFoundException {
         boolean doesExist = object.doesExist(name);
@@ -46,13 +45,26 @@ public class ObjectController {
             return name + " does not exist";
         }
     }
-
     @GetMapping("/objects/publish/")
     public String uploadObject(@RequestParam String name) throws ObjectNotFoundException {
         boolean doesExist = object.doesExist(name);
         if (doesExist) {
             object.publish(name);
             return String.valueOf(object.publish(name));
+        } else {
+            return name + " does not exist";
+        }
+    }
+    @GetMapping("/objects/download/")
+    public String downloadObject(@RequestParam String name,String path) throws ObjectNotFoundException {
+        boolean doesExist = object.doesExist(name);
+        if (doesExist) {
+            object.download(name,path);
+            if (object.download(name,path)) {
+                return name + " downloaded";
+            } else {
+                return name + " not downloaded";
+            }
         } else {
             return name + " does not exist";
         }
