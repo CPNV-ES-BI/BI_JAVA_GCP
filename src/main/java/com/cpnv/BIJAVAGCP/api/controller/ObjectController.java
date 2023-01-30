@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.LinkedList;
 
 @RestController
+@RequestMapping("/api")
 public class ObjectController {
     private final DataObjectController object;
     @Autowired
