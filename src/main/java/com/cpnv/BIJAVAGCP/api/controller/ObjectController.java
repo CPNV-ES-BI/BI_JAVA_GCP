@@ -26,9 +26,8 @@ public class ObjectController {
         object.list();
         return name + " created";
     }
-
     @GetMapping("/objects/")
-    public String getObject(@RequestParam String name) throws ObjectAlreadyExistsException {
+    public String getObject(@RequestParam String name) {
         boolean doesExist = object.doesExist(name);
         if (doesExist) {
             return name + " exists";
@@ -36,8 +35,9 @@ public class ObjectController {
             return name + " does not exist";
         }
     }
+
     @DeleteMapping("/objects/")
-    public String deleteObject(@RequestParam String name) throws ObjectAlreadyExistsException, ObjectNotFoundException {
+    public String deleteObject(@RequestParam String name) throws ObjectNotFoundException {
         boolean doesExist = object.doesExist(name);
         if (doesExist) {
             object.delete(name);
@@ -47,4 +47,14 @@ public class ObjectController {
         }
     }
 
+    @GetMapping("/objects/publish/")
+    public String uploadObject(@RequestParam String name) throws ObjectNotFoundException {
+        boolean doesExist = object.doesExist(name);
+        if (doesExist) {
+            object.publish(name);
+            return String.valueOf(object.publish(name));
+        } else {
+            return name + " does not exist";
+        }
+    }
 }
