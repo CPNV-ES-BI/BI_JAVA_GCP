@@ -6,6 +6,7 @@ import com.google.cloud.storage.*;
 import javax.annotation.Nullable;
 import java.net.URI;
 import java.nio.file.Paths;
+import java.util.LinkedList;
 import java.util.concurrent.TimeUnit;
 
 public class DataObjectController implements DataObject {
@@ -27,11 +28,14 @@ public class DataObjectController implements DataObject {
         BlobId blobId = BlobId.of(bucketName, objectName);
         return storage.get(blobId);
     }
-    public void list() {
+    public LinkedList<String> list() {
         Page<Blob> blobs = storage.list(bucketName);
+        LinkedList<String> list = new LinkedList<>();
         for (Blob blob : blobs.iterateAll()) {
+            list.add(blob.getName());
             System.out.println(blob.getName());
         }
+        return list;
     }
     public void create (String objectName, String content) throws ObjectAlreadyExistsException {
         BlobId blobId = BlobId.of(bucketName,  objectName);
