@@ -23,8 +23,8 @@ public class DataObjectController implements DataObject {
     public void setBucketName(String bucketName) {
         this.bucketName = bucketName;
     }
-    private Blob getBlob(String fileName) {
-        BlobId blobId = BlobId.of(bucketName, fileName);
+    private Blob getBlob(String objectName) {
+        BlobId blobId = BlobId.of(bucketName, objectName);
         return storage.get(blobId);
     }
     public void list() {
@@ -33,42 +33,42 @@ public class DataObjectController implements DataObject {
             System.out.println(blob.getName());
         }
     }
-    public void create (String fileName, String content) throws ObjectAlreadyExistsException {
-        BlobId blobId = BlobId.of(bucketName,  fileName);
+    public void create (String objectName, String content) throws ObjectAlreadyExistsException {
+        BlobId blobId = BlobId.of(bucketName,  objectName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
-        if (doesExist(fileName)) throw new ObjectAlreadyExistsException(fileName);
+        if (doesExist(objectName)) throw new ObjectAlreadyExistsException(objectName);
         else{
             storage.create(blobInfo, content.getBytes());
         }
     }
-    public void create (String fileName, String content, String path) throws ObjectAlreadyExistsException {
-        BlobId blobId = BlobId.of(bucketName, path + "/" + fileName);
+    public void create (String objectName, String content, String path) throws ObjectAlreadyExistsException {
+        BlobId blobId = BlobId.of(bucketName, path + "/" + objectName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
-        if (doesExist(path+"/"+fileName)) throw new ObjectAlreadyExistsException(fileName);
+        if (doesExist(path+"/"+objectName)) throw new ObjectAlreadyExistsException(objectName);
         else{
             storage.create(blobInfo, content.getBytes());
         }
     }
-    public boolean doesExist(String fileName, @Nullable String... path) {
+    public boolean doesExist(String objectName, @Nullable String... path) {
         String fullPath;
         if (path == null || path.length == 0) {
-            fullPath = fileName;
+            fullPath = objectName;
         } else {
-            fullPath = String.join("/", path) + "/" + fileName;
+            fullPath = String.join("/", path) + "/" + objectName;
         }
         Blob blob = getBlob(fullPath);
         return blob != null;
     }
-    public void delete(String fileName) throws ObjectNotExistsException {
-        Blob blob = getBlob(fileName);
-        if (!doesExist(fileName)) throw new ObjectNotExistsException(fileName);
+    public void delete(String objectName) throws ObjectNotFoundException {
+        Blob blob = getBlob(objectName);
+        if (!doesExist(objectName)) throw new ObjectNotFoundException(objectName);
         else{
             blob.delete();
         }
     }
-    public void delete(String folderName,boolean recursive) {
+    public void delete(String folderName,boolean isRecursive) {
         Page<Blob> blobs = storage.list(bucketName, Storage.BlobListOption.prefix(folderName));
-        if (recursive) {
+        if (isRecursive) {
             for (Blob blob : blobs.iterateAll()) {
                 blob.delete();
             }
@@ -80,17 +80,17 @@ public class DataObjectController implements DataObject {
             }
         }
     }
-    public boolean download(String fileName, String destination) throws ObjectNotExistsException {
-        Blob blob = getBlob(fileName);
-        if (blob == null)  throw new ObjectNotExistsException(fileName);
+    public boolean download(String objectName, String destination) throws ObjectNotFoundException {
+        Blob blob = getBlob(objectName);
+        if (blob == null)  throw new ObjectNotFoundException(objectName);
         else {
-            blob.downloadTo(Paths.get(destination  + fileName));
+            blob.downloadTo(Paths.get(destination  + objectName));
             return true;
         }
     }
-    public URI publish (String fileName) throws ObjectNotExistsException {
-        Blob blob = getBlob(fileName);
-        if (blob == null) throw new ObjectNotExistsException(fileName);
+    public URI publish (String objectName) throws ObjectNotFoundException {
+        Blob blob = getBlob(objectName);
+        if (blob == null) throw new ObjectNotFoundException(objectName);
         else {
             return URI.create(blob.signUrl(2, TimeUnit.DAYS).toString());
         }
