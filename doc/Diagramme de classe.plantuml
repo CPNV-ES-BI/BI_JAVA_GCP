@@ -1,0 +1,57 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+legend top left
+    Project
+        BI_JAVA_GCP
+    Diagram
+        Class
+    Authors
+        TESFAZGHI Robiel
+        RABOT Mathieu
+endlegend
+
+package BIJAVAGCP {
+    interface DataObject << interface >>{
+        + list(): void
+        + delete(objectName: String, isRecursive: boolean = false): void
+        + doesExist(objectName: String, path: String[]?): boolean
+        + download(objectName: String, destination: String): boolean
+        + publish(objectName: String): URI
+        + create(objectName: String, content: String, path String = null): void
+    }
+
+    class DataObjectController {
+        + DataObjectController():
+        - storage: Storage
+        - bucketName: String
+        - getBlob(objectName: String): Blob
+        + getBucketName(): String
+        + setBucketName(bucketName: String): void
+    }
+
+    class ObjectAlreadyExistsException {
+        + ObjectAlreadyExistsException (fileName: String)
+    }
+
+    class ObjectNotExistsException {
+        + ObjectNotExistsException (fileName: String)
+    }
+}
+
+class Exception
+
+interface Storage
+
+
+DataObject <|.. DataObjectController
+
+DataObjectController ..> ObjectAlreadyExistsException : throws
+DataObjectController  ..> ObjectNotExistsException : throws
+
+ObjectAlreadyExistsException  --|> Exception
+ObjectNotExistsException --|> Exception
+
+DataObjectController *- Storage
+
+@enduml
