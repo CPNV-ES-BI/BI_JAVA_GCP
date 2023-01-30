@@ -32,7 +32,6 @@ public class DataObjectController implements DataObject {
         LinkedList<String> list = new LinkedList<>();
         for (Blob blob : blobs.iterateAll()) {
             list.add(blob.getName());
-            System.out.println(blob.getName());
         }
         return list;
     }

@@ -26,8 +26,8 @@ public class ObjectController {
         object.list();
         return name + " created";
     }
-    @GetMapping("/objects/")
-    public String getObject(@RequestParam String name) {
+    @GetMapping("/objects/{name}")
+    public String getObject(@PathVariable String name) {
         boolean doesExist = object.doesExist(name);
         if (doesExist) {
             return name + " exists";
@@ -35,8 +35,8 @@ public class ObjectController {
             return name + " does not exist";
         }
     }
-    @DeleteMapping("/objects/")
-    public String deleteObject(@RequestParam String name) throws ObjectNotFoundException {
+    @DeleteMapping("/objects/{name}")
+    public String deleteObject(@PathVariable String name) throws ObjectNotFoundException {
         boolean doesExist = object.doesExist(name);
         if (doesExist) {
             object.delete(name);
@@ -45,8 +45,8 @@ public class ObjectController {
             return name + " does not exist";
         }
     }
-    @GetMapping("/objects/publish/")
-    public String uploadObject(@RequestParam String name) throws ObjectNotFoundException {
+    @GetMapping("/objects/{name}/publish")
+    public String uploadObject(@PathVariable String name) throws ObjectNotFoundException {
         boolean doesExist = object.doesExist(name);
         if (doesExist) {
             object.publish(name);
@@ -55,9 +55,10 @@ public class ObjectController {
             return name + " does not exist";
         }
     }
-    @GetMapping("/objects/download/")
-    public String downloadObject(@RequestParam String name,String path) throws ObjectNotFoundException {
+    @GetMapping("/objects/{name}/download")
+    public String downloadObject(@PathVariable String name) throws ObjectNotFoundException {
         boolean doesExist = object.doesExist(name);
+        String path = "src/main/resources/";
         if (doesExist) {
             object.download(name,path);
             if (object.download(name,path)) {

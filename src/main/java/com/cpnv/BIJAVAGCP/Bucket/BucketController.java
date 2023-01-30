@@ -17,7 +17,6 @@ public class BucketController  implements DataBucket {
             System.out.println(bucket.getName());
         }
     }
-
     public void create(String bucketName) {
         Storage storage = StorageOptions.getDefaultInstance().getService();
         storage.create(BucketInfo.of(bucketName));
