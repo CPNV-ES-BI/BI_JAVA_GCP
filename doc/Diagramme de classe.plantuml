@@ -31,27 +31,27 @@ package BIJAVAGCP {
     }
 
     class ObjectAlreadyExistsException {
-        + ObjectAlreadyExistsException (fileName: String)
+        + ObjectAlreadyExistsException (objectName: String)
     }
 
-    class ObjectNotExistsException {
-        + ObjectNotExistsException (fileName: String)
+    class ObjectNotFoundException {
+        + ObjectNotFoundException (objectName: String)
     }
 }
 
 class Exception
 
-interface Storage
+interface SDK
 
 
 DataObject <|.. DataObjectController
 
 DataObjectController ..> ObjectAlreadyExistsException : throws
-DataObjectController  ..> ObjectNotExistsException : throws
+DataObjectController  ..> ObjectNotFoundException : throws
 
 ObjectAlreadyExistsException  --|> Exception
-ObjectNotExistsException --|> Exception
+ObjectNotFoundException --|> Exception
 
-DataObjectController *- Storage
+DataObjectController *- SDK
 
 @enduml
