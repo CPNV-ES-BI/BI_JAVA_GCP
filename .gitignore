@@ -40,3 +40,8 @@ out/
 ### Secret ###
 src/main/resources/access-key.json
 target/classes/access-key.json
+/target/
+
+### Application specific ###
+gcp.properties
+*.jar
