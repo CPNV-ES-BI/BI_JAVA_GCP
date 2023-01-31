@@ -18,6 +18,11 @@ jobs:
   test:
     name: Run tests
     runs-on: ubuntu-latest
+    env:
+      PROPERTY_FILE: src/main/resources/gcp.properties
+      GCP_ACCESS_KEY_ID: ${{ secrets.GCP_ACCESS_KEY_ID }}
+      GCP_SECRET_ACCESS_KEY: ${{ secrets.GCP_SECRET_ACCESS_KEY }}
+      GCP_BUCKET_NAME: ${{ secrets.GCP_BUCKET_NAME }}
     steps:
       -
         name: Checkout
