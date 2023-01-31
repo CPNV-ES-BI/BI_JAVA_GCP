@@ -24,51 +24,31 @@ public class ObjectController {
     @PostMapping("objects")
     public String create(@RequestParam String name, String content) throws ObjectAlreadyExistsException {
         object.create(name, content);
-        object.list();
         return name + " created";
     }
     @GetMapping("/objects/{name}")
     public String getObject(@PathVariable String name) {
-        boolean doesExist = object.doesExist(name);
-        if (doesExist) {
-            return name + " exists";
-        } else {
-            return name + " does not exist";
-        }
+        if (object.doesExist(name)) return object.read(name);
+        return name + " does not exist";
     }
     @DeleteMapping("/objects/{name}")
     public String deleteObject(@PathVariable String name) throws ObjectNotFoundException {
-        boolean doesExist = object.doesExist(name);
-        if (doesExist) {
+        if (object.doesExist(name)) {
             object.delete(name);
             return name + " deleted";
-        } else {
-            return name + " does not exist";
-        }
+        } return name + " does not exist";
     }
     @GetMapping("/objects/{name}/publish")
     public String uploadObject(@PathVariable String name) throws ObjectNotFoundException {
-        boolean doesExist = object.doesExist(name);
-        if (doesExist) {
-            object.publish(name);
-            return String.valueOf(object.publish(name));
-        } else {
-            return name + " does not exist";
-        }
+        if (object.doesExist(name)) return String.valueOf(object.publish(name));
+        return name + " does not exist";
     }
     @GetMapping("/objects/{name}/download")
     public String downloadObject(@PathVariable String name) throws ObjectNotFoundException {
-        boolean doesExist = object.doesExist(name);
         String path = "src/main/resources/";
-        if (doesExist) {
-            object.download(name,path);
-            if (object.download(name,path)) {
-                return name + " downloaded";
-            } else {
-                return name + " not downloaded";
-            }
-        } else {
-            return name + " does not exist";
-        }
+        if (object.doesExist(name)) {
+            if (object.download(name,path))return name + " downloaded";
+            return name + " not downloaded";
+        }  return name + " does not exist";
     }
 }

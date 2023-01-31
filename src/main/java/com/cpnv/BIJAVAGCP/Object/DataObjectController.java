@@ -97,4 +97,9 @@ public class DataObjectController implements DataObject {
             return URI.create(blob.signUrl(2, TimeUnit.DAYS).toString());
         }
     }
+
+    public String read(String name) {
+        Blob blob = getBlob(name);
+        return new String(blob.getContent());
+    }
 }
