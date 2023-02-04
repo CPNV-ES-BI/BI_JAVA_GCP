@@ -1,7 +1,7 @@
 package com.cpnv.BIJAVAGCP.Object;
 
 public class ObjectAlreadyExistsException extends Exception {
-    public ObjectAlreadyExistsException(String objectName) {
-        super("Object " + objectName + " already exists");
+    public ObjectAlreadyExistsException(String objectKey) {
+        super("Object " + objectKey + " already exists");
     }
 }

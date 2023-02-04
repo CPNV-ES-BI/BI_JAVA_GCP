@@ -6,11 +6,11 @@ import java.util.LinkedList;
 public interface DataObject {
 
     LinkedList<String> list();
-    void create(String objectName,String content) throws ObjectAlreadyExistsException;
-    void create(String objectName,String content,String path) throws ObjectAlreadyExistsException;
-    boolean doesExist(String objectName, String... path);
-    void delete(String objectName) throws ObjectNotFoundException;
-    void delete(String objectName, boolean isRecursive) throws ObjectNotFoundException;
-    boolean download(String objectName, String destination) throws ObjectNotFoundException;
-    URI publish (String objectName) throws ObjectNotFoundException;
+    void create(String objectKey,String content) throws DataObjectService.ObjectAlreadyExistsException;
+    void create(String objectKey,String content,String path) throws DataObjectService.ObjectAlreadyExistsException;
+    boolean doesExist(String objectKey, String... path);
+    void delete(String objectKey) throws DataObjectService.ObjectNotFoundException;
+    void delete(String objectKey, boolean isRecursive) throws DataObjectService.ObjectNotFoundException;
+    boolean download(String objectKey, String destination) throws DataObjectService.ObjectNotFoundException;
+    URI publish (String objectKey) throws DataObjectService.ObjectNotFoundException;
 }
