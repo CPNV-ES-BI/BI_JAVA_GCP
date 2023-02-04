@@ -1,4 +1,4 @@
-package com.cpnv.BIJAVAGCP.Object;
+package com.cpnv.bijavagcp.services;
 
 import org.junit.jupiter.api.*;
 

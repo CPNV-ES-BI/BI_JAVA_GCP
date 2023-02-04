@@ -1,6 +1,6 @@
-package com.cpnv.BIJAVAGCP.api.controller;
+package com.cpnv.bijavagcp.api.controller;
 
-import com.cpnv.BIJAVAGCP.Object.DataObjectService;
+import com.cpnv.bijavagcp.services.DataObjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

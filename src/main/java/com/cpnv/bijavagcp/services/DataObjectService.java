@@ -1,4 +1,4 @@
-package com.cpnv.BIJAVAGCP.Object;
+package com.cpnv.bijavagcp.services;
 
 import com.google.api.gax.paging.Page;
 import com.google.cloud.storage.*;

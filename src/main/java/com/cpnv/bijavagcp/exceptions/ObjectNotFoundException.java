@@ -1,4 +1,4 @@
-package com.cpnv.BIJAVAGCP.Object;
+package com.cpnv.bijavagcp.exceptions;
 
 public class ObjectNotFoundException extends Exception {
     public ObjectNotFoundException(String objectKey) {

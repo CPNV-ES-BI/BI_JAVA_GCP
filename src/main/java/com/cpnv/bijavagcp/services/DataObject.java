@@ -1,4 +1,4 @@
-package com.cpnv.BIJAVAGCP.Object;
+package com.cpnv.bijavagcp.services;
 
 import java.net.URI;
 import java.util.LinkedList;
