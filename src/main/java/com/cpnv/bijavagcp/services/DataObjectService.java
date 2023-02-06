@@ -59,7 +59,10 @@ public class DataObjectService implements DataObject {
             fullPath = String.join("/", path) + "/" + objectKey;
         }
         Blob blob = getBlob(fullPath);
-        return blob != null;
+        if (blob != null) return true;
+        Page<Blob> blobs = storage.list(bucketName, Storage.BlobListOption.prefix(fullPath+"/"));
+        return blobs.iterateAll().iterator().hasNext();
+
     }
     public void delete(String objectKey) throws ObjectNotFoundException {
         Blob blob = getBlob(objectKey);
@@ -69,7 +72,7 @@ public class DataObjectService implements DataObject {
         }
     }
     public void delete(String folderName,boolean isRecursive) {
-        Page<Blob> blobs = storage.list(bucketName, Storage.BlobListOption.prefix(folderName));
+        Page<Blob> blobs = storage.list(bucketName, Storage.BlobListOption.prefix(folderName+"/"));
         if (isRecursive) {
             for (Blob blob : blobs.iterateAll()) {
                 blob.delete();

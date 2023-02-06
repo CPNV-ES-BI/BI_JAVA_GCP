@@ -45,12 +45,11 @@ public class DataObjectController {
     }
     @DeleteMapping("/objects/{key}")
     public ResponseEntity<String> deleteObject(@PathVariable String key) {
-        try {
-            object.delete(key);
+        if (object.doesExist(key)) {
+            object.delete(key,true);
             return new ResponseEntity<>(key + " deleted", HttpStatus.OK);
-        } catch (DataObjectService.ObjectNotFoundException e) {
-            return new ResponseEntity<>(key + " does not exist", HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>(key + " does not exist", HttpStatus.NOT_FOUND);
     }
     @PatchMapping("/objects/{key}/publish")
     public ResponseEntity<String> uploadObject(@PathVariable String key) {
