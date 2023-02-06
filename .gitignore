@@ -40,3 +40,4 @@ out/
 ### Secret ###
 src/main/resources/access-key.json
 target/classes/access-key.json
+src/main/resources/gcp.properties
