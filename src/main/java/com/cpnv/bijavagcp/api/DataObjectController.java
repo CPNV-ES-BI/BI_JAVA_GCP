@@ -1,5 +1,7 @@
-package com.cpnv.bijavagcp.api.controller;
+package com.cpnv.bijavagcp.api;
 
+import com.cpnv.bijavagcp.exceptions.ObjectAlreadyExistsException;
+import com.cpnv.bijavagcp.exceptions.ObjectNotFoundException;
 import com.cpnv.bijavagcp.services.DataObjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +19,6 @@ public class DataObjectController {
     @Autowired
     public DataObjectController() throws IOException {
         object = new DataObjectService();
-        object.setBucketName("bi.java.cld.education");
     }
     @GetMapping("/objects")
     public ResponseEntity<LinkedList<String>> getList() {
@@ -27,13 +28,12 @@ public class DataObjectController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-
     @PostMapping("objects")
     public ResponseEntity<String> create(@RequestParam String key, String content) {
         try {
             object.create(key, content);
             return new ResponseEntity<>(key + " created", HttpStatus.CREATED);
-        } catch (DataObjectService.ObjectAlreadyExistsException e) {
+        } catch (ObjectAlreadyExistsException e) {
             return new ResponseEntity<>(key + " already exists", HttpStatus.CONFLICT);
         }
     }
@@ -57,7 +57,7 @@ public class DataObjectController {
         try {
             URI result = object.publish(key);
             return new ResponseEntity<>(String.valueOf(result), HttpStatus.OK);
-        } catch (DataObjectService.ObjectNotFoundException e) {
+        } catch (ObjectNotFoundException e) {
             return new ResponseEntity<>(key + " does not exist", HttpStatus.NOT_FOUND);
         }
     }
@@ -71,7 +71,7 @@ public class DataObjectController {
             } else {
                 return new ResponseEntity<>(key + " not downloaded", HttpStatus.INTERNAL_SERVER_ERROR);
             }
-        } catch (DataObjectService.ObjectNotFoundException e) {
+        } catch (ObjectNotFoundException e) {
             return new ResponseEntity<>(key + " does not exist", HttpStatus.NOT_FOUND);
         }
     }

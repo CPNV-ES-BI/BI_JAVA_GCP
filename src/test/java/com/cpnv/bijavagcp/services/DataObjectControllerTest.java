@@ -1,5 +1,7 @@
 package com.cpnv.bijavagcp.services;
 
+import com.cpnv.bijavagcp.exceptions.ObjectAlreadyExistsException;
+import com.cpnv.bijavagcp.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.*;
 
 import java.io.IOException;
@@ -16,20 +18,19 @@ class DataObjectControllerTest {
     private static String objectKey, objectKey2, content,destination;
 
     @BeforeAll
-    static void setUpBeforeClass()  {
+    static void setUpBeforeClass() throws IOException {
         object = new DataObjectService();
-        object.setBucketName("bi.java.cld.education");
         objectKey = "test.txt";
         objectKey2 = "test2.txt";
         content = "Test content for object creation in GCP bucket for test purpose for BI Java course";
         destination = "src/main/resources/";
     }
     @BeforeEach
-    void setUp() throws DataObjectService.ObjectAlreadyExistsException {
+    void setUp() throws ObjectAlreadyExistsException {
         object.create(objectKey, content);
     }
     @AfterEach
-    void tearDown() throws DataObjectService.ObjectNotFoundException {
+    void tearDown() throws ObjectNotFoundException {
         object.delete(objectKey);
         if (object.doesExist(objectKey2)) object.delete(objectKey2);
     }
@@ -72,10 +73,10 @@ class DataObjectControllerTest {
         boolean result = object.doesExist(objectKey);
         //then
         assertTrue(result);
-        assertThrows(DataObjectService.ObjectAlreadyExistsException.class, () -> object.create(objectKey, content));
+        assertThrows(ObjectAlreadyExistsException.class, () -> object.create(objectKey, content));
     }
     @Test
-    public void test_CreateObject_PathNotExists_Success() throws DataObjectService.ObjectAlreadyExistsException, DataObjectService.ObjectNotFoundException {
+    public void test_CreateObject_PathNotExists_Success() throws ObjectAlreadyExistsException, ObjectNotFoundException {
         //given
         String path = "PathNotExists/ToNoWhere";
         //when
@@ -86,7 +87,7 @@ class DataObjectControllerTest {
         object.delete(path+"/"+objectKey);
     }
     @Test
-    public void test_DownloadObject_NominalCase_Success() throws DataObjectService.ObjectNotFoundException {
+    public void test_DownloadObject_NominalCase_Success() throws ObjectNotFoundException {
         //given
         //when
         boolean result = object.download(objectKey,destination);
@@ -100,10 +101,10 @@ class DataObjectControllerTest {
         boolean result = object.doesExist(objectKey2);
         assertFalse(result);
         //then
-        assertThrows(DataObjectService.ObjectNotFoundException.class, () -> object.download(objectKey2,destination));
+        assertThrows(ObjectNotFoundException.class, () -> object.download(objectKey2,destination));
     }
     @Test
-    public void test_PublishObject_NominalCase_Success() throws DataObjectService.ObjectNotFoundException {
+    public void test_PublishObject_NominalCase_Success() throws ObjectNotFoundException {
         //given
         URI url;
         //when
@@ -118,10 +119,10 @@ class DataObjectControllerTest {
         boolean result = object.doesExist(objectKey2);
         assertFalse(result);
         //then
-        assertThrows(DataObjectService.ObjectNotFoundException.class, () -> object.publish(objectKey2));
+        assertThrows(ObjectNotFoundException.class, () -> object.publish(objectKey2));
     }
     @Test
-    public void test_DeleteObject_ObjectExists_ObjectDeleted() throws DataObjectService.ObjectNotFoundException, DataObjectService.ObjectAlreadyExistsException {
+    public void test_DeleteObject_ObjectExists_ObjectDeleted() throws ObjectNotFoundException, ObjectAlreadyExistsException {
         //given
         object.create(objectKey2, content);
         //when
@@ -131,7 +132,7 @@ class DataObjectControllerTest {
         assertFalse(result);
     }
     @Test
-    public void test_DeleteObject_ObjectContainingSubObjectsExists_ObjectDeletedRecursively() throws DataObjectService.ObjectAlreadyExistsException {
+    public void test_DeleteObject_ObjectContainingSubObjectsExists_ObjectDeletedRecursively() throws ObjectAlreadyExistsException {
         //given
         String containPath = "level1/level2/level3/level4/level5";
         object.create(objectKey,content,containPath);
@@ -149,6 +150,6 @@ class DataObjectControllerTest {
         //when
         //then
         assertFalse(result);
-        assertThrows(DataObjectService.ObjectNotFoundException.class, () -> object.delete(objectKey2));
+        assertThrows(ObjectNotFoundException.class, () -> object.delete(objectKey2));
     }
 }

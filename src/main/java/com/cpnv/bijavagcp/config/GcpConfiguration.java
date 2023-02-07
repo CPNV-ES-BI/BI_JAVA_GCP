@@ -16,6 +16,7 @@ public class GcpConfiguration {
     private final String accessKey;
     private final String clientId;
     private final String clientEmail;
+    private final String bucketName;
 
     public GcpConfiguration() throws IOException {
         Properties properties = new Properties();
@@ -25,6 +26,7 @@ public class GcpConfiguration {
         this.accessKey = properties.getProperty("GCP_SECRET_ACCESS_KEY");
         this.clientId = properties.getProperty("GCP_CLIENT_ID");
         this.clientEmail = properties.getProperty("GCP_CLIENT_EMAIL");
+        this.bucketName = properties.getProperty("GCP_BUCKET_NAME");
     }
     public String getProjectId() {
         return projectId;
@@ -41,6 +43,9 @@ public class GcpConfiguration {
     public String getClientEmail() {
         return clientEmail;
     }
+    public String getBucketName() {
+        return bucketName;
+    }
     public Storage getStorage() throws IOException {
         GoogleCredentials credentials = ServiceAccountCredentials.fromPkcs8(
                 getClientId(),
@@ -55,5 +60,4 @@ public class GcpConfiguration {
                 .build()
                 .getService();
     }
-
 }

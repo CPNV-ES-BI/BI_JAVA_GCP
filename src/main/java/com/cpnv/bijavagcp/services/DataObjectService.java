@@ -1,6 +1,8 @@
 package com.cpnv.bijavagcp.services;
 
 import com.cpnv.bijavagcp.config.GcpConfiguration;
+import com.cpnv.bijavagcp.exceptions.ObjectAlreadyExistsException;
+import com.cpnv.bijavagcp.exceptions.ObjectNotFoundException;
 import com.google.api.gax.paging.Page;
 import com.google.cloud.storage.*;
 
@@ -13,18 +15,13 @@ import java.util.concurrent.TimeUnit;
 
 public class DataObjectService implements DataObject {
 
-    private String bucketName;
+    private final String bucketName;
     private final Storage storage;
 
     public DataObjectService() throws IOException {
         GcpConfiguration gcp = new GcpConfiguration();
         storage = gcp.getStorage();
-    }
-    public String getBucketName() {
-        return bucketName;
-    }
-    public void setBucketName(String bucketName) {
-        this.bucketName = bucketName;
+        bucketName = gcp.getBucketName();
     }
     private Blob getBlob(String objectKey) {
         BlobId blobId = BlobId.of(bucketName, objectKey);
@@ -56,16 +53,14 @@ public class DataObjectService implements DataObject {
     }
     public boolean doesExist(String objectKey, @Nullable String... path) {
         String fullPath;
-        if (path == null || path.length == 0) {
-            fullPath = objectKey;
-        } else {
+        if (path == null || path.length == 0)  fullPath = objectKey;
+        else {
             fullPath = String.join("/", path) + "/" + objectKey;
         }
         Blob blob = getBlob(fullPath);
         if (blob != null) return true;
         Page<Blob> blobs = storage.list(bucketName, Storage.BlobListOption.prefix(fullPath+"/"));
         return blobs.iterateAll().iterator().hasNext();
-
     }
     public void delete(String objectKey) throws ObjectNotFoundException {
         Blob blob = getBlob(objectKey);
@@ -103,21 +98,8 @@ public class DataObjectService implements DataObject {
             return URI.create(blob.signUrl(2, TimeUnit.DAYS).toString());
         }
     }
-
     public String read(String name) {
         Blob blob = getBlob(name);
         return new String(blob.getContent());
-    }
-
-    public static class ObjectNotFoundException extends Exception {
-        public ObjectNotFoundException(String objectKey) {
-            super("Object " + objectKey + " not found");
-        }
-    }
-
-    public static class ObjectAlreadyExistsException extends Exception {
-        public ObjectAlreadyExistsException(String objectKey) {
-            super("Object " + objectKey + " already exists");
-        }
     }
 }
