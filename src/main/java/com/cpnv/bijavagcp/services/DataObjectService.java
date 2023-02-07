@@ -1,9 +1,11 @@
 package com.cpnv.bijavagcp.services;
 
+import com.cpnv.bijavagcp.config.GcpConfiguration;
 import com.google.api.gax.paging.Page;
 import com.google.cloud.storage.*;
 
 import javax.annotation.Nullable;
+import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Paths;
 import java.util.LinkedList;
@@ -14,8 +16,8 @@ public class DataObjectService implements DataObject {
     private String bucketName;
     private final Storage storage;
 
-    public DataObjectService() {
-        storage = StorageOptions.getDefaultInstance().getService();
+    public DataObjectService() throws IOException {
+        storage = GcpConfiguration.getStorage();
     }
     public String getBucketName() {
         return bucketName;

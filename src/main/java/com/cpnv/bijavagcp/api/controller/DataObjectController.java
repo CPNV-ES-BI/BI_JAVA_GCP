@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.LinkedList;
 
@@ -14,7 +15,7 @@ import java.util.LinkedList;
 public class DataObjectController {
     private final DataObjectService object;
     @Autowired
-    public DataObjectController() {
+    public DataObjectController() throws IOException {
         object = new DataObjectService();
         object.setBucketName("bi.java.cld.education");
     }
