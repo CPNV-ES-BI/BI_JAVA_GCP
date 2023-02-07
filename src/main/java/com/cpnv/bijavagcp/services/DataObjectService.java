@@ -17,7 +17,8 @@ public class DataObjectService implements DataObject {
     private final Storage storage;
 
     public DataObjectService() throws IOException {
-        storage = GcpConfiguration.getStorage();
+        GcpConfiguration gcp = new GcpConfiguration();
+        storage = gcp.getStorage();
     }
     public String getBucketName() {
         return bucketName;

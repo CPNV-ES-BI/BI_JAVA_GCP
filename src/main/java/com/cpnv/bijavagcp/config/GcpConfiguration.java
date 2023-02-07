@@ -6,70 +6,51 @@ import com.google.auth.oauth2.ServiceAccountCredentials;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
 public class GcpConfiguration {
 
-   private String bucketName;
-   private static String projectId;
-   private static String accessKeyId;
-    private static String accessKey;
-    private static String clientId;
-    private static String clientEmail;
+    private final String projectId;
+    private final String accessKeyId;
+    private final String accessKey;
+    private final String clientId;
+    private final String clientEmail;
 
-
-    public String getBucketName() {
-        return bucketName;
-    }
-
-    public static String getProjectId() throws IOException {
+    public GcpConfiguration() throws IOException {
         Properties properties = new Properties();
         properties.load(BiJavaGcpApplication.class.getResourceAsStream("/gcp.properties"));
-        return properties.getProperty("GCP_PROJECT_ID");
+        this.projectId = properties.getProperty("GCP_PROJECT_ID");
+        this.accessKeyId = properties.getProperty("GCP_ACCESS_KEY_ID");
+        this.accessKey = properties.getProperty("GCP_SECRET_ACCESS_KEY");
+        this.clientId = properties.getProperty("GCP_CLIENT_ID");
+        this.clientEmail = properties.getProperty("GCP_CLIENT_EMAIL");
     }
-
-    public static String getAccessKeyId() throws IOException {
-        Properties properties = new Properties();
-        properties.load(BiJavaGcpApplication.class.getResourceAsStream("/gcp.properties"));
-        return properties.getProperty("GCP_ACCESS_KEY_ID");
+    public String getProjectId() {
+        return projectId;
     }
-
-    public static String getAccessKey() throws IOException {
-        Properties properties = new Properties();
-        properties.load(BiJavaGcpApplication.class.getResourceAsStream("/gcp.properties"));
-        return properties.getProperty("GCP_SECRET_ACCESS_KEY");
+    public String getAccessKeyId() {
+        return accessKeyId;
     }
-
-    public static String getClientId() throws IOException {
-        Properties properties = new Properties();
-        properties.load(BiJavaGcpApplication.class.getResourceAsStream("/gcp.properties"));
-        return properties.getProperty("clientId");
+    public String getAccessKey() {
+        return accessKey;
     }
-    public static String getClientEmail() throws IOException {
-        Properties properties = new Properties();
-        properties.load(BiJavaGcpApplication.class.getResourceAsStream("/gcp.properties"));
-        return properties.getProperty("clientEmail");
+    public String getClientId() {
+        return clientId;
     }
-
-    public void setBucketName(String bucketName) {
-        this.bucketName = bucketName;
+    public String getClientEmail() {
+        return clientEmail;
     }
-
-    public static Storage getStorage() throws IOException {
-        String projectId = getProjectId();
-        File credentialsPath = new File("src/main/resources/access-key.json");
-        GoogleCredentials credentials;
-        try (FileInputStream serviceAccountStream = new FileInputStream(credentialsPath)) {
-            credentials = ServiceAccountCredentials.fromStream(serviceAccountStream);
-        }
-System.out.println(projectId);
-        System.out.println(getClientEmail());
-
+    public Storage getStorage() throws IOException {
+        GoogleCredentials credentials = ServiceAccountCredentials.fromPkcs8(
+                getClientId(),
+                getClientEmail(),
+                getAccessKey(),
+                getAccessKeyId(),
+                null
+        );
         return StorageOptions.newBuilder()
-                .setProjectId(projectId)
+                .setProjectId(getProjectId())
                 .setCredentials(credentials)
                 .build()
                 .getService();
