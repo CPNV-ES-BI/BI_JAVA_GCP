@@ -1,4 +1,4 @@
-package com.cpnv.BIJAVAGCP;
+package com.cpnv.bijavagcp;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
