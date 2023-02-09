@@ -43,9 +43,6 @@ jobs:
             echo GCP_ACCESS_KEY_ID=${{ env.GCP_ACCESS_KEY_ID }} >> ${{ env.PROPERTY_FILE }}
             echo GCP_SECRET_ACCESS_KEY=${{ env.GCP_SECRET_ACCESS_KEY }} >> ${{ env.PROPERTY_FILE }}
             echo GCP_BUCKET_NAME=${{ env.GCP_BUCKET_NAME }} >> ${{ env.PROPERTY_FILE }}
-      -
-        name: Build the Docker image
-        run: docker compose test --no-cache
       - 
         name: Run the integrations tests
         run: docker compose up test
