@@ -23,6 +23,10 @@ jobs:
       GCP_ACCESS_KEY_ID: ${{ secrets.GCP_ACCESS_KEY_ID }}
       GCP_SECRET_ACCESS_KEY: ${{ secrets.GCP_SECRET_ACCESS_KEY }}
       GCP_BUCKET_NAME: ${{ secrets.GCP_BUCKET_NAME }}
+      GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      GCP_CLIENT_ID: ${{ secrets.GCP_CLIENT_ID }}
+      GCP_CLIENT_EMAIL: ${{ secrets.GCP_CLIENT_EMAIL }}
+      
     steps:
       -
         name: Checkout
@@ -43,6 +47,9 @@ jobs:
             echo GCP_ACCESS_KEY_ID=${{ env.GCP_ACCESS_KEY_ID }} >> ${{ env.PROPERTY_FILE }}
             echo GCP_SECRET_ACCESS_KEY=${{ env.GCP_SECRET_ACCESS_KEY }} >> ${{ env.PROPERTY_FILE }}
             echo GCP_BUCKET_NAME=${{ env.GCP_BUCKET_NAME }} >> ${{ env.PROPERTY_FILE }}
+            echo GCP_PROJECT_ID=${{ env.GCP_PROJECT_ID }} >> ${{ env.PROPERTY_FILE }}
+            echo GCP_CLIENT_ID: ${{ secrets.GCP_CLIENT_ID }} >> ${{ env.PROPERTY_FILE }}
+            echo GCP_CLIENT_EMAIL: ${{ secrets.GCP_CLIENT_EMAIL }} >> ${{ env.PROPERTY_FILE }}
       - 
         name: Run the integrations tests
         run: docker compose up test
