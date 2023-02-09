@@ -21,7 +21,7 @@ public class DataObjectController {
         object = new DataObjectService();
     }
     @GetMapping("/objects")
-    public ResponseEntity<LinkedList<String>> getList() {
+    public ResponseEntity<LinkedList<String>> getObjects() {
         LinkedList<String> list = object.list();
         if (list != null) {
             return new ResponseEntity<>(list, HttpStatus.OK);
@@ -29,7 +29,7 @@ public class DataObjectController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     @PostMapping("objects")
-    public ResponseEntity<String> create(@RequestParam String key, String content) {
+    public ResponseEntity<String> createObject(@RequestParam String key, String content) {
         try {
             object.create(key, content);
             return new ResponseEntity<>(key + " created", HttpStatus.CREATED);
