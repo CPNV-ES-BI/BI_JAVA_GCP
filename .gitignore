@@ -4,6 +4,7 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+target/
 
 ### STS ###
 .apt_generated
@@ -39,3 +40,4 @@ out/
 ### Secret ###
 src/main/resources/access-key.json
 target/classes/access-key.json
+src/main/resources/gcp.properties

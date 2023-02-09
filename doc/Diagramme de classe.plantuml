@@ -1,0 +1,88 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+legend top left
+    Project
+        BI_JAVA_GCP
+    Diagram
+        Class
+    Authors
+        TESFAZGHI Robiel
+        RABOT Mathieu
+endlegend
+
+package BIJAVAGCP {
+    interface DataObject << interface >>{
+        + list(): LinkedList<String>
+        + delete(objectKey: String, isRecursive: boolean = false): void
+        + doesExist(objectKey: String, path: String[]?): boolean
+        + download(objectKey: String, destination: String): boolean
+        + publish(objectKey: String): URI
+        + create(objectKey: String, content: String, path String = null): void
+    }
+
+    class DataObjectService {
+        + DataObjectService():
+        - storage: Storage
+        - bucketName: String
+        - getBlob(objectKey: String): Blob
+        + read(objectKey: String): String
+    }
+
+    class DataObjectController {
+        - object: DataObjectService
+        + DataObjectController():
+        + getObjects(): ResponseEntity<String>
+        + createObject(key: String, content: String): ResponseEntity<String>
+        + getObject(key: String): ResponseEntity<String>
+        + deleteObject(key: String): ResponseEntity<String>
+        + uploadObject(key: String): ResponseEntity<String>
+        + downloadObject(key: String): ResponseEntity<String>
+    }
+
+       class ObjectAlreadyExistsException {
+        + ObjectAlreadyExistsException (objectKey: String)
+    }
+
+    class GcpConfiguration {
+        + GcpConfiguration ():
+        - projectId: String
+        - accessKeyId: String
+        - accessKey: String
+        - clientId: String
+        - clientEmail: String
+        - bucketName: String
+        + getprojectId(): String
+        + getaccessKeyId(): String
+        + getaccessKey(): String
+        + getclientId(): String
+        + getclientEmail(): String
+        + getbucketName(): String
+        + getStorage(): Storage
+    }
+
+    class ObjectNotFoundException {
+        + ObjectNotFoundException (objectKey: String)
+    }
+}
+
+
+
+class Exception
+
+interface SDK
+
+
+DataObject <|.. DataObjectService
+
+GcpConfiguration *- SDK
+
+DataObjectService ..> GcpConfiguration
+DataObjectService ..> ObjectAlreadyExistsException : throws
+DataObjectService ..> ObjectNotFoundException : throws
+
+DataObjectController ..> DataObjectService
+
+ObjectAlreadyExistsException  --|> Exception
+ObjectNotFoundException --|> Exception
+@enduml
