@@ -50,6 +50,9 @@ jobs:
             echo GCP_PROJECT_ID=${{ env.GCP_PROJECT_ID }} >> ${{ env.PROPERTY_FILE }}
             echo GCP_CLIENT_ID: ${{ secrets.GCP_CLIENT_ID }} >> ${{ env.PROPERTY_FILE }}
             echo GCP_CLIENT_EMAIL: ${{ secrets.GCP_CLIENT_EMAIL }} >> ${{ env.PROPERTY_FILE }}
-      - 
-        name: Run the integrations tests
-        run: docker compose up test
+        
+      - name: Build the Docker image
+        run: docker build . --tag bi_java_gcp-test --file Dockerfile --target test
+
+      - name: Run the integrations tests
+        run: docker run --env-file ${{ env.PROPERTY_FILE }} bi_java_gcp-test:latest
