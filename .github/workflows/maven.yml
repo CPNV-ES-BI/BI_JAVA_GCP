@@ -20,7 +20,12 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PROPERTY_FILE: src/main/resources/gcp.properties
-      
+      GCP_ACCESS_KEY_ID: ${{ secrets.GCP_ACCESS_KEY_ID }}
+      GCP_SECRET_ACCESS_KEY: ${{ secrets.GCP_SECRET_ACCESS_KEY }}
+      GCP_BUCKET_NAME: ${{ secrets.GCP_BUCKET_NAME }}
+      GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      GCP_CLIENT_ID: ${{ secrets.GCP_CLIENT_ID }}
+      GCP_CLIENT_EMAIL: ${{ secrets.GCP_CLIENT_EMAIL }}
     steps:
       -
         name: Checkout
@@ -35,24 +40,15 @@ jobs:
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
         
-      - name: check secrets
-        run: |
-          echo "The value of SECRET_NAME is ${{ secrets.GCP_ACCESS_KEY_ID }}"
-          echo "The value of SECRET_NAME is ${{ secrets.GCP_SECRET_ACCESS_KEY }}"
-          echo "The value of SECRET_NAME is ${{ secrets.GCP_BUCKET_NAME }}"
-          echo "The value of SECRET_NAME is ${{ secrets.GCP_PROJECT_ID }}"
-          echo "The value of SECRET_NAME is ${{ secrets.GCP_CLIENT_ID }}"
-          echo "The value of SECRET_NAME is ${{ secrets.GCP_CLIENT_EMAIL }}"
-        
       - name: Create aws properties file
         run: |
           touch ${{ env.PROPERTY_FILE }}
-            echo GCP_ACCESS_KEY_ID=${{ secrets.GCP_ACCESS_KEY_ID }} >> ${{ env.PROPERTY_FILE }}
-            echo GCP_SECRET_ACCESS_KEY=${{ secrets.GCP_SECRET_ACCESS_KEY }} >> ${{ env.PROPERTY_FILE }}
-            echo GCP_BUCKET_NAME=${{ secrets.GCP_BUCKET_NAME }} >> ${{ env.PROPERTY_FILE }}
-            echo GCP_PROJECT_ID=${{ secrets.GCP_PROJECT_ID }} >> ${{ env.PROPERTY_FILE }}
-            echo GCP_CLIENT_ID=${{ secrets.GCP_CLIENT_ID }} >> ${{ env.PROPERTY_FILE }}
-            echo GCP_CLIENT_EMAIL=${{ secrets.GCP_CLIENT_EMAIL }} >> ${{ env.PROPERTY_FILE }}
+            echo GCP_ACCESS_KEY_ID=${{ env.GCP_ACCESS_KEY_ID }} >> ${{ env.PROPERTY_FILE }}
+            echo GCP_SECRET_ACCESS_KEY=${{ env.GCP_SECRET_ACCESS_KEY }} >> ${{ env.PROPERTY_FILE }}
+            echo GCP_BUCKET_NAME=${{ env.GCP_BUCKET_NAME }} >> ${{ env.PROPERTY_FILE }}
+            echo GCP_PROJECT_ID=${{ env.GCP_PROJECT_ID }} >> ${{ env.PROPERTY_FILE }}
+            echo GCP_CLIENT_ID=${{ env.GCP_CLIENT_ID }} >> ${{ env.PROPERTY_FILE }}
+            echo GCP_CLIENT_EMAIL=${{ env.GCP_CLIENT_EMAIL }} >> ${{ env.PROPERTY_FILE }}
           ls -R
           cat ${{ env.PROPERTY_FILE }}
         
