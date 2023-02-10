@@ -16,10 +16,12 @@ import java.util.LinkedList;
 @RequestMapping("/api")
 public class DataObjectController {
     private final DataObjectService object;
+
     @Autowired
     public DataObjectController() throws IOException {
         object = new DataObjectService();
     }
+
     @GetMapping("/objects")
     public ResponseEntity<LinkedList<String>> getObjects() {
         LinkedList<String> list = object.list();
@@ -28,6 +30,7 @@ public class DataObjectController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
     @PostMapping("objects")
     public ResponseEntity<String> createObject(@RequestParam String key, String content) {
         try {
@@ -37,21 +40,29 @@ public class DataObjectController {
             return new ResponseEntity<>(key + " already exists", HttpStatus.CONFLICT);
         }
     }
+
     @GetMapping("/objects/{key}")
     public ResponseEntity<String> getObject(@PathVariable String key) {
         if (object.doesExist(key)) {
-            return new ResponseEntity<>(object.read(key), HttpStatus.OK);
+            LinkedList<String> list = object.list(key);
+            if (list.size() == 1) {
+                return new ResponseEntity<>(object.read(key), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(list.toString(), HttpStatus.OK);
+            }
         }
         return new ResponseEntity<>(key + " does not exist", HttpStatus.NOT_FOUND);
     }
+
     @DeleteMapping("/objects/{key}")
     public ResponseEntity<String> deleteObject(@PathVariable String key) {
         if (object.doesExist(key)) {
-            object.delete(key,true);
+            object.delete(key, true);
             return new ResponseEntity<>(key + " deleted", HttpStatus.OK);
         }
         return new ResponseEntity<>(key + " does not exist", HttpStatus.NOT_FOUND);
     }
+
     @PatchMapping("/objects/{key}/publish")
     public ResponseEntity<String> uploadObject(@PathVariable String key) {
         try {
@@ -61,11 +72,12 @@ public class DataObjectController {
             return new ResponseEntity<>(key + " does not exist", HttpStatus.NOT_FOUND);
         }
     }
+
     @GetMapping("/objects/{key}/download")
     public ResponseEntity<String> downloadObject(@PathVariable String key) {
         String path = "src/main/resources/";
         try {
-            boolean result = object.download(key,path);
+            boolean result = object.download(key, path);
             if (result) {
                 return new ResponseEntity<>(key + " downloaded", HttpStatus.OK);
             } else {

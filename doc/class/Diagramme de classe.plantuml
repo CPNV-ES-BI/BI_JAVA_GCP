@@ -13,7 +13,7 @@ endlegend
 
 package BIJAVAGCP {
     interface DataObject << interface >>{
-        + list(): LinkedList<String>
+        + list(path String = null): LinkedList<String>
         + delete(objectKey: String, isRecursive: boolean = false): void
         + doesExist(objectKey: String, path: String[]?): boolean
         + download(objectKey: String, destination: String): boolean

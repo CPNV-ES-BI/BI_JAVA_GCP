@@ -9,11 +9,20 @@ import java.util.LinkedList;
 public interface DataObject {
 
     LinkedList<String> list();
-    void create(String objectKey,String content) throws ObjectAlreadyExistsException;
-    void create(String objectKey,String content,String path) throws ObjectAlreadyExistsException;
+    
+    LinkedList<String> list(String path);
+
+    void create(String objectKey, String content) throws ObjectAlreadyExistsException;
+
+    void create(String objectKey, String content, String path) throws ObjectAlreadyExistsException;
+
     boolean doesExist(String objectKey, String... path);
-    void delete(String objectKey) throws ObjectAlreadyExistsException, ObjectNotFoundException;
+
+    void delete(String objectKey) throws ObjectNotFoundException;
+
     void delete(String objectKey, boolean isRecursive) throws ObjectNotFoundException;
+
     boolean download(String objectKey, String destination) throws ObjectNotFoundException;
-    URI publish (String objectKey) throws ObjectNotFoundException;
+
+    URI publish(String objectKey) throws ObjectNotFoundException;
 }

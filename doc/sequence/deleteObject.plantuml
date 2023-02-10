@@ -1,0 +1,33 @@
+@startuml DataObject_createObject
+'https://plantuml.com/sequence-diagram
+
+legend top left
+    Project
+        BI_JAVA_GCP
+    Diagram
+        Sequence delete Object
+    Authors
+        TESFAZGHI Robiel
+        RABOT Mathieu
+endlegend
+
+actor "Client Service" as Client
+
+participant DataObjectService
+participant DataObjectConfiguration
+participant SDK
+
+Client -> DataObjectService: delete(objectKey, isRecursive)
+DataObjectService -> DataObjectConfiguration: getStorage()
+DataObjectConfiguration-> SDK: getStorage(credentials)
+DataObjectConfiguration<- SDK: Storage
+DataObjectService <- DataObjectConfiguration: Storage
+DataObjectService-> DataObjectService: doesExist(objectKey)
+
+alt true
+    DataObjectService -> Client: throw ObjectNotFoundException(objectKey)
+else
+    DataObjectService-> SDK: delete(objectKey, isRecursive)
+end
+
+@enduml
