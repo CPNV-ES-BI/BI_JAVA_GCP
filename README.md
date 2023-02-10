@@ -1,7 +1,6 @@
 # BI JAVA GCP
 
-The goal of this spring boot microservice is to use Google Cloud Platform as a data source 
-to carry out certain business intelligence-related activities.
+The goal of this project is to build a cloud storage microservice application using Google Cloud Platform (GCP) SDK and the Spring Boot JAVA framework. The application will utilize the GCP Storage service to store and manage data in the cloud. The data objects will be manipulated using a local library and its functionality will be exposed usng an API controller built using OpenAPI3 "Swagger"
 
 
 ## Versions
