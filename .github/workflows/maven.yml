@@ -65,3 +65,11 @@ jobs:
 
       - name: Run the integrations tests
         run: docker run --env-file ${{ env.PROPERTY_FILE }} bi_java_gcp-test:latest
+        env:
+          GCP_ACCESS_KEY_ID: ${{ secrets.GCP_ACCESS_KEY_ID }}
+          GCP_SECRET_ACCESS_KEY: ${{ secrets.GCP_SECRET_ACCESS_KEY }}
+          GCP_BUCKET_NAME: ${{ secrets.GCP_BUCKET_NAME }}
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          GCP_CLIENT_ID: ${{ secrets.GCP_CLIENT_ID }}
+          GCP_CLIENT_EMAIL: ${{ secrets.GCP_CLIENT_EMAIL }}
+          
