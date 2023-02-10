@@ -18,14 +18,6 @@ jobs:
   test:
     name: Run tests
     runs-on: ubuntu-latest
-    env:
-      PROPERTY_FILE: src/main/resources/gcp.properties
-      GCP_ACCESS_KEY_ID: ${{ secrets.GCP_ACCESS_KEY_ID }}
-      GCP_SECRET_ACCESS_KEY: ${{ secrets.GCP_SECRET_ACCESS_KEY }}
-      GCP_BUCKET_NAME: ${{ secrets.GCP_BUCKET_NAME }}
-      GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-      GCP_CLIENT_ID: ${{ secrets.GCP_CLIENT_ID }}
-      GCP_CLIENT_EMAIL: ${{ secrets.GCP_CLIENT_EMAIL }}
       
     steps:
       -
@@ -53,20 +45,17 @@ jobs:
       - name: Create aws properties file
         run: |
           touch ${{ env.PROPERTY_FILE }}
-            echo GCP_ACCESS_KEY_ID=${{ env.GCP_ACCESS_KEY_ID }} >> ${{ env.PROPERTY_FILE }}
-            echo GCP_SECRET_ACCESS_KEY=${{ env.GCP_SECRET_ACCESS_KEY }} >> ${{ env.PROPERTY_FILE }}
-            echo GCP_BUCKET_NAME=${{ env.GCP_BUCKET_NAME }} >> ${{ env.PROPERTY_FILE }}
-            echo GCP_PROJECT_ID=${{ env.GCP_PROJECT_ID }} >> ${{ env.PROPERTY_FILE }}
-            echo GCP_CLIENT_ID=${{ env.GCP_CLIENT_ID }} >> ${{ env.PROPERTY_FILE }}
-            echo GCP_CLIENT_EMAIL=${{ env.GCP_CLIENT_EMAIL }} >> ${{ env.PROPERTY_FILE }}
+            echo GCP_ACCESS_KEY_ID=${{ secrets.GCP_ACCESS_KEY_ID }} >> ${{ env.PROPERTY_FILE }}
+            echo GCP_SECRET_ACCESS_KEY=${{ secrets.GCP_SECRET_ACCESS_KEY }} >> ${{ env.PROPERTY_FILE }}
+            echo GCP_BUCKET_NAME=${{ secrets.GCP_BUCKET_NAME }} >> ${{ env.PROPERTY_FILE }}
+            echo GCP_PROJECT_ID=${{ secrets.GCP_PROJECT_ID }} >> ${{ env.PROPERTY_FILE }}
+            echo GCP_CLIENT_ID=${{ secrets.GCP_CLIENT_ID }} >> ${{ env.PROPERTY_FILE }}
+            echo GCP_CLIENT_EMAIL=${{ secrets.GCP_CLIENT_EMAIL }} >> ${{ env.PROPERTY_FILE }}
         
       - name: Build the Docker image
-        run: docker compose up test
-        env:
-          GCP_ACCESS_KEY_ID: ${{ secrets.GCP_ACCESS_KEY_ID }}
-          GCP_SECRET_ACCESS_KEY: ${{ secrets.GCP_SECRET_ACCESS_KEY }}
-          GCP_BUCKET_NAME: ${{ secrets.GCP_BUCKET_NAME }}
-          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-          GCP_CLIENT_ID: ${{ secrets.GCP_CLIENT_ID }}
-          GCP_CLIENT_EMAIL: ${{ secrets.GCP_CLIENT_EMAIL }}
+        run: docker build . --tag bi_java_gcp-test --file Dockerfile --target test
+
+      - name: Run the integrations tests
+        run: docker run --env-file ${{ env.PROPERTY_FILE }} bi_java_gcp-test:latest
+          
           
