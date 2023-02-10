@@ -41,6 +41,15 @@ jobs:
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
         
+      - name: check secrets
+        run: |
+          echo "The value of SECRET_NAME is ${{ secrets.GCP_ACCESS_KEY_ID }}"
+          echo "The value of SECRET_NAME is ${{ secrets.GCP_SECRET_ACCESS_KEY }}"
+          echo "The value of SECRET_NAME is ${{ secrets.GCP_BUCKET_NAME }}"
+          echo "The value of SECRET_NAME is ${{ secrets.GCP_PROJECT_ID }}"
+          echo "The value of SECRET_NAME is ${{ secrets.GCP_CLIENT_ID }}"
+          echo "The value of SECRET_NAME is ${{ secrets.GCP_CLIENT_EMAIL }}"
+        
       - name: Create aws properties file
         run: |
           touch ${{ env.PROPERTY_FILE }}
