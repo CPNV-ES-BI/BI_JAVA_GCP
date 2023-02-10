@@ -9,6 +9,7 @@ import java.util.LinkedList;
 public interface DataObject {
 
     LinkedList<String> list();
+    LinkedList<String> list(String path);
     void create(String objectKey,String content) throws ObjectAlreadyExistsException;
     void create(String objectKey,String content,String path) throws ObjectAlreadyExistsException;
     boolean doesExist(String objectKey, String... path);

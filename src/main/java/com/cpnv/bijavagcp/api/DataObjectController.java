@@ -40,7 +40,12 @@ public class DataObjectController {
     @GetMapping("/objects/{key}")
     public ResponseEntity<String> getObject(@PathVariable String key) {
         if (object.doesExist(key)) {
-            return new ResponseEntity<>(object.read(key), HttpStatus.OK);
+            LinkedList<String> list = object.list(key);
+            if (list.size() == 1) {
+                return new ResponseEntity<>(object.read(key), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(list.toString(), HttpStatus.OK);
+            }
         }
         return new ResponseEntity<>(key + " does not exist", HttpStatus.NOT_FOUND);
     }

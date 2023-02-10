@@ -35,6 +35,14 @@ public class DataObjectService implements DataObject {
         }
         return list;
     }
+    public LinkedList<String> list(String path) {
+        Page<Blob> blobs = storage.list(bucketName, Storage.BlobListOption.prefix(path+"/"));
+        LinkedList<String> list = new LinkedList<>();
+        for (Blob blob : blobs.iterateAll()) {
+            list.add(blob.getName().replace(path + "/", ""));
+        }
+        return list;
+    }
     public void create (String objectKey, String content) throws ObjectAlreadyExistsException {
         BlobId blobId = BlobId.of(bucketName,  objectKey);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build();
