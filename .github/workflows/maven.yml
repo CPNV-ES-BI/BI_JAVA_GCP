@@ -43,7 +43,7 @@ jobs:
         
       - name: check secrets
         run: |
-          echo "The value of SECRET_NAME is ${{ secrets.DOCKERHUB_USERNAME }}"
+          echo "The value of SECRET_NAME is ${{ secrets.GCP_ACCESS_KEY_ID }}"
           echo "The value of SECRET_NAME is ${{ secrets.GCP_SECRET_ACCESS_KEY }}"
           echo "The value of SECRET_NAME is ${{ secrets.GCP_BUCKET_NAME }}"
           echo "The value of SECRET_NAME is ${{ secrets.GCP_PROJECT_ID }}"
