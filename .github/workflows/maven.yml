@@ -46,6 +46,7 @@ jobs:
         
       - name: Create aws properties file
         run: |
+          ls -a
           touch ${{ env.PROPERTY_FILE }}
             echo GCP_ACCESS_KEY_ID=${{ secrets.GCP_ACCESS_KEY_ID }} >> ${{ env.PROPERTY_FILE }}
             echo GCP_SECRET_ACCESS_KEY=${{ secrets.GCP_SECRET_ACCESS_KEY }} >> ${{ env.PROPERTY_FILE }}
