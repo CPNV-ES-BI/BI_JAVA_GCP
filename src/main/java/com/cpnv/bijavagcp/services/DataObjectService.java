@@ -37,6 +37,7 @@ public class DataObjectService implements DataObject {
         }
         return list;
     }
+
     public LinkedList<String> list(String path) {
         Page<Blob> blobs = storage.list(bucketName, Storage.BlobListOption.prefix(path+"/"));
         LinkedList<String> list = new LinkedList<>();

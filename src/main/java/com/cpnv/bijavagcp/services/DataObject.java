@@ -15,6 +15,7 @@ public interface DataObject {
     void create(String objectKey, String content) throws ObjectAlreadyExistsException;
 
     void create(String objectKey, String content, String path) throws ObjectAlreadyExistsException;
+
     boolean doesExist(String objectKey, String... path);
 
     void delete(String objectKey) throws ObjectNotFoundException;

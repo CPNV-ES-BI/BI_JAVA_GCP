@@ -25,15 +25,18 @@ class DataObjectControllerTest {
         content = "Test content for object creation in GCP bucket for test purpose for BI Java course";
         destination = "src/main/resources/";
     }
+
     @BeforeEach
     void setUp() throws ObjectAlreadyExistsException {
         object.create(objectKey, content);
     }
+
     @AfterEach
     void tearDown() throws ObjectNotFoundException {
         object.delete(objectKey);
         if (object.doesExist(objectKey2)) object.delete(objectKey2);
     }
+
     @AfterAll
     static void tearDownAfterClass() throws IOException {
         Path path = Paths.get(destination + objectKey);
@@ -41,6 +44,7 @@ class DataObjectControllerTest {
             Files.delete(path);
         }
     }
+
     @Test
     public void test_DoesExist_ExistsCase_True (){
         //given
@@ -49,6 +53,7 @@ class DataObjectControllerTest {
         //then
         assertTrue(result);
     }
+
     @Test
     public void test_DoesExist_NotExists_False() {
         //given
@@ -57,6 +62,7 @@ class DataObjectControllerTest {
         //then
         assertFalse(result);
     }
+
     @Test
     public void test_CreateObject_NominalCase_ObjectExists() throws Exception {
         //given
@@ -66,6 +72,7 @@ class DataObjectControllerTest {
         //then
         assertTrue(result);
     }
+
     @Test
     public void test_CreateObject_AlreadyExists_ThrowException() {
         //given
@@ -75,6 +82,7 @@ class DataObjectControllerTest {
         assertTrue(result);
         assertThrows(ObjectAlreadyExistsException.class, () -> object.create(objectKey, content));
     }
+
     @Test
     public void test_CreateObject_PathNotExists_Success() throws ObjectAlreadyExistsException, ObjectNotFoundException {
         //given
@@ -86,6 +94,7 @@ class DataObjectControllerTest {
         assertTrue(result);
         object.delete(path+"/"+objectKey);
     }
+
     @Test
     public void test_DownloadObject_NominalCase_Success() throws ObjectNotFoundException {
         //given
@@ -94,6 +103,7 @@ class DataObjectControllerTest {
         //then
         assertTrue(result);
     }
+
     @Test
     public void test_DownloadObject_NotExists_ThrowException()  {
         //given
@@ -103,6 +113,7 @@ class DataObjectControllerTest {
         //then
         assertThrows(ObjectNotFoundException.class, () -> object.download(objectKey2,destination));
     }
+
     @Test
     public void test_PublishObject_NominalCase_Success() throws ObjectNotFoundException {
         //given
@@ -112,6 +123,7 @@ class DataObjectControllerTest {
         //then
         assertNotNull(url);
     }
+
     @Test
     public void test_PublishObject_ObjectNotFound_ThrowException() {
         //given
@@ -121,6 +133,7 @@ class DataObjectControllerTest {
         //then
         assertThrows(ObjectNotFoundException.class, () -> object.publish(objectKey2));
     }
+
     @Test
     public void test_DeleteObject_ObjectExists_ObjectDeleted() throws ObjectNotFoundException, ObjectAlreadyExistsException {
         //given
@@ -131,6 +144,7 @@ class DataObjectControllerTest {
         //then
         assertFalse(result);
     }
+
     @Test
     public void test_DeleteObject_ObjectContainingSubObjectsExists_ObjectDeletedRecursively() throws ObjectAlreadyExistsException {
         //given
@@ -143,6 +157,7 @@ class DataObjectControllerTest {
         //then
         assertNotEquals(expected, actual);
     }
+
     @Test
     public void test_DeleteObject_ObjectDoesntExist_ThrowException() {
         //given
