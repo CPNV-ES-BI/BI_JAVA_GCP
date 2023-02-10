@@ -18,6 +18,8 @@ jobs:
   test:
     name: Run tests
     runs-on: ubuntu-latest
+    env:
+      PROPERTY_FILE: src/main/resources/gcp.properties
       
     steps:
       -
