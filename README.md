@@ -1,4 +1,4 @@
-# Hello_World-Microservice
+# BI JAVA GCP
 
 The goal of this spring boot microservice is to use Google Cloud Platform as a data source 
 to carry out certain business intelligence-related activities.
@@ -23,14 +23,17 @@ You can download it from the Oracle [website](https://www.oracle.com/java/techno
 ## Clone the project
 
 ```
-git clone https://github.com/Nomeos/Hello_World-Microservice.git
+git clone https://github.com/CPNV-ES-BI/BI_JAVA_GCP.git
 ```
 
 ## Dependencies
 
     - Spring Boot Starter
-    - Spring Boot Starter Test
     - Spring Boot Starter Web
+    - Spring Cloud GCP Starter
+    - Spring Cloud GCP Starter Storage
+    - Springdoc Openapi UI
+    - Spring Boot Starter Test
 
 ## Build the project locally
 
@@ -50,46 +53,33 @@ This command will run all the tests in the project.
 ```
 
 ### Run specific class tests
-This command will run all the tests in the HelloWorldControllerTest class.
+This command will run all the tests in the DataObjectControllerTest class.
 
 ```
-./mvnw test -Dtest=HelloWorldControllerTest
+./mvnw test -Dtest=DataObjectControllerTest
 ```
 
 ### Run specific method tests
-This command will run the testHelloWorld test in the HelloWorldControllerTest class.
+This command will run the test_DoesExist_ExistsCase_True test in the DataObjectControllerTest class.
 To make this work, you add to separate the class name from the method name with a #.
 
 ```
-./mvnw test -Dtest=HelloWorldControllerTest#testHelloWorld
-```
-
-## Create the docker image from the code
-
-First, you can build the production image with the following command:
-```
-docker build --no-cache -t cpnv/hello-world-microservice-base .
-```
-
-This command build an image in the docker and specify the target to build.
-The target is the stage of the dockerfile. In this case, the target is the base stage. And give a name to the image.
-
-Then, you can build the test image with the following command:
-```
-docker build --no-cache -t cpnv/hello-world-microservice-test --target test .
+./mvnw test -Dtest=DataObjectControllerTest#test_DoesExist_ExistsCase_True
 ```
 
 ## Run the docker image
 
+Those commands create and run the docker using docker-compose.
+
 ### Run the production image
 
 ```
-docker run -it --rm --name hello-world-base cpnv/hello-world-microservice-base
+docker compose up developement
 ```
 ### Run the test image
 
 ```
-docker run -it --rm cpnv/hello-world-microservice-test
+docker compose up test
 ```
 
 This command starts the image and run it as a container.
@@ -104,21 +94,31 @@ The directory structure of the project is as follows:
     - src
         - main
             - java
-                - ch
+                - com
                     - cpnv
-                        - BIJAVAGCP
-                            - BiJavaGcpApplication.java
-                            - DataObject.java
-                            - DataObjectControler.java
+                        - bijavagcp
+                            - api
+                                - DataObjectController
+                            - config
+                                - GcpConfiguration
+                            - exceptions
+                                - ObjectAlreadyExistsException
+                                - ObjectNotFoundException
+                            - services
+                                - DataObject
+                                - DataObjectService
+                            - BiJavaGcpApplication                            
             - resources
                 - application.properties
+                - gcp.properties
         - test
             - java
-                - ch
+                - com
                     - cpnv
-                        - BIJAVAGCP
-                            - BiJavaGcpApplicationTests.java
-                            - DataObjectTests.java
+                        - bijavagcp
+                            - services
+                                - DataObjectControllerTest
+    - docker-compose.yml
     - Dockerfile
     - README.md
     - mvnw

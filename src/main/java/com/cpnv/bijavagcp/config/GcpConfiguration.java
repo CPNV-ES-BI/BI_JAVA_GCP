@@ -28,24 +28,31 @@ public class GcpConfiguration {
         this.clientEmail = properties.getProperty("GCP_CLIENT_EMAIL");
         this.bucketName = properties.getProperty("GCP_BUCKET_NAME");
     }
+
     public String getProjectId() {
         return projectId;
     }
+
     public String getAccessKeyId() {
         return accessKeyId;
     }
+
     public String getAccessKey() {
         return accessKey;
     }
+
     public String getClientId() {
         return clientId;
     }
+
     public String getClientEmail() {
         return clientEmail;
     }
+
     public String getBucketName() {
         return bucketName;
     }
+
     public Storage getStorage() throws IOException {
         GoogleCredentials credentials = ServiceAccountCredentials.fromPkcs8(
                 getClientId(),
