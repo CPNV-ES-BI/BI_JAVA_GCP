@@ -45,6 +45,27 @@ Run the spring boot application locally using the maven wrapper.
 
 ## Build the tests locally
 
+### Create the environnement properties
+
+In order to run the tests, we need to configure the environnement properties in the project.
+
+A file name src/main/resources/gcp.example.properties contain those variables:
+
+``` Properties
+GCP_ACCESS_KEY_ID=
+GCP_SECRET_ACCESS_KEY=
+GCP_PROJECT_ID=
+GCP_CLIENT_ID=
+GCP_CLIENT_EMAIL=
+GCP_BUCKET_NAME=
+```
+
+All those variables need to be set for the proper conduct of the tests like this:
+
+``` Properties
+GCP_ACCESS_KEY_ID=test
+```
+Even if it's a string, a property value doesn't contain quotes.
 ### Run all tests
 This command will run all the tests in the project.
 
