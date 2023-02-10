@@ -85,6 +85,12 @@ docker compose up test
 This command starts the image and run it as a container.
 It runs all tests and report the result in the console.
 
+## CI with Maven
+
+During the project, a continous integration github action has been created to test the unit test from the project.
+
+The configuration of the file can be find in the [wiki.](https://github.com/CPNV-ES-BI/BI_JAVA_GCP/wiki/CI-CD---With-docker)
+
 ## Directory structure
 
 The directory structure of the project is as follows:
