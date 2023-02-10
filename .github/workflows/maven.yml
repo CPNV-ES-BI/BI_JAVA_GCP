@@ -61,10 +61,7 @@ jobs:
             echo GCP_CLIENT_EMAIL=${{ env.GCP_CLIENT_EMAIL }} >> ${{ env.PROPERTY_FILE }}
         
       - name: Build the Docker image
-        run: docker build . --tag bi_java_gcp-test --file Dockerfile --target test
-
-      - name: Run the integrations tests
-        run: docker run --env-file ${{ env.PROPERTY_FILE }} bi_java_gcp-test:latest
+        run: docker compose up test
         env:
           GCP_ACCESS_KEY_ID: ${{ secrets.GCP_ACCESS_KEY_ID }}
           GCP_SECRET_ACCESS_KEY: ${{ secrets.GCP_SECRET_ACCESS_KEY }}
