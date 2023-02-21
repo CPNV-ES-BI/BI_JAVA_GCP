@@ -43,9 +43,10 @@ public class DataObjectController {
 
     @GetMapping("/objects/{key}")
     public ResponseEntity<String> getObject(@PathVariable String key) {
+        key = key.replace("&", "/");
         if (object.doesExist(key)) {
             LinkedList<String> list = object.list(key);
-            if (list.size() == 1) {
+            if (list.isEmpty()) {
                 return new ResponseEntity<>(object.read(key), HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(list.toString(), HttpStatus.OK);
