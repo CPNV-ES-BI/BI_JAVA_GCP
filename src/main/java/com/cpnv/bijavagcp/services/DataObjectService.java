@@ -64,18 +64,14 @@ public class DataObjectService implements DataObject {
         }
     }
 
-    public boolean doesExist(String objectKey, @Nullable String... path) {
-        String fullPath;
-        if (path == null || path.length == 0) fullPath = objectKey;
-        else {
-            fullPath = String.join("/", path) + "/" + objectKey;
-        }
-        Blob blob = getBlob(fullPath);
-        if (blob != null) return true;
-        Page<Blob> blobs = storage.list(bucketName, Storage.BlobListOption.prefix(fullPath + "/"));
-        return blobs.iterateAll().iterator().hasNext();
+    public boolean doesExist(String objectKey) {
+        Blob blob = getBlob(objectKey);
+        return blob != null;
     }
-
+    public boolean doesExist(String objectKey, String path) {
+        Blob blob = getBlob(path + "/" + objectKey);
+        return blob != null;
+    }
     public void delete(String objectKey) throws ObjectNotFoundException {
         Blob blob = getBlob(objectKey);
         if (!doesExist(objectKey)) throw new ObjectNotFoundException(objectKey);

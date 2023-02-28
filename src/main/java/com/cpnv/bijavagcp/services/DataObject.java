@@ -8,16 +8,14 @@ import java.util.LinkedList;
 
 public interface DataObject {
 
-    LinkedList<String> list();
-    
-    LinkedList<String> list(String path);
-
     void create(String objectKey, String content) throws ObjectAlreadyExistsException;
 
     void create(String objectKey, String content, String path) throws ObjectAlreadyExistsException;
 
-    boolean doesExist(String objectKey, String... path);
+    boolean doesExist(String objectKey);
 
+    boolean doesExist(String objectKey, String path);
+    
     void delete(String objectKey) throws ObjectNotFoundException;
 
     void delete(String objectKey, boolean isRecursive) throws ObjectNotFoundException;
