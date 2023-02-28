@@ -70,7 +70,7 @@ class DataObjectControllerTest {
         object.create(objectKey2, content);
         boolean result = object.doesExist(objectKey2);
         //then
-        assertFalse(result);
+        assertTrue(result);
     }
 
     @Test
