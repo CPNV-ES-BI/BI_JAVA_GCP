@@ -4,7 +4,6 @@ import com.cpnv.bijavagcp.exceptions.ObjectAlreadyExistsException;
 import com.cpnv.bijavagcp.exceptions.ObjectNotFoundException;
 
 import java.net.URI;
-import java.util.LinkedList;
 
 public interface DataObject {
 
@@ -15,7 +14,7 @@ public interface DataObject {
     boolean doesExist(String objectKey);
 
     boolean doesExist(String objectKey, String path);
-    
+
     void delete(String objectKey) throws ObjectNotFoundException;
 
     void delete(String objectKey, boolean isRecursive) throws ObjectNotFoundException;
