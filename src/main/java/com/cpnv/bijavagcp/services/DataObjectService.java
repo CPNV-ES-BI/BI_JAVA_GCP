@@ -9,7 +9,6 @@ import com.google.cloud.storage.*;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.net.URI;
-import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.concurrent.TimeUnit;
 
@@ -100,14 +99,13 @@ public class DataObjectService implements DataObject {
         }
     }
 
-    public boolean download(String objectKey, String path) throws ObjectNotFoundException {
+     public byte[] download(String objectKey) throws ObjectNotFoundException {
         Blob blob = getBlob(objectKey);
         if (blob == null) throw new ObjectNotFoundException(objectKey);
         else {
-            blob.downloadTo(Paths.get(path + objectKey));
-            return true;
+            return blob.getContent();
         }
-    }
+     }
 
     public URI publish(String objectKey) throws ObjectNotFoundException {
         Blob blob = getBlob(objectKey);

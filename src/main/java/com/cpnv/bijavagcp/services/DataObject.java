@@ -22,7 +22,7 @@ public interface DataObject {
 
     void delete(String objectKey, boolean isRecursive) throws ObjectNotFoundException;
 
-    boolean download(String objectKey, String destination) throws ObjectNotFoundException;
+    byte[] download(String objectKey) throws ObjectNotFoundException;
 
     URI publish(String objectKey) throws ObjectNotFoundException;
 }
