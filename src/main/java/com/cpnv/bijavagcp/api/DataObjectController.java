@@ -78,8 +78,8 @@ public class DataObjectController {
     public ResponseEntity<String> downloadObject(@PathVariable String key) {
         String path = "src/main/resources/";
         try {
-            boolean result = object.download(key, path);
-            if (result) {
+            byte[] result = object.download(key);
+            if (result != null) {
                 return new ResponseEntity<>(key + " downloaded", HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(key + " not downloaded", HttpStatus.INTERNAL_SERVER_ERROR);

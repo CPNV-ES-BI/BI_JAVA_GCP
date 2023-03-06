@@ -9,7 +9,6 @@ import com.google.cloud.storage.*;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.net.URI;
-import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.concurrent.TimeUnit;
 
@@ -65,16 +64,14 @@ public class DataObjectService implements DataObject {
         }
     }
 
-    public boolean doesExist(String objectKey, @Nullable String... path) {
-        String fullPath;
-        if (path == null || path.length == 0) fullPath = objectKey;
-        else {
-            fullPath = String.join("/", path) + "/" + objectKey;
-        }
-        Blob blob = getBlob(fullPath);
-        if (blob != null) return true;
-        Page<Blob> blobs = storage.list(bucketName, Storage.BlobListOption.prefix(fullPath + "/"));
-        return blobs.iterateAll().iterator().hasNext();
+    public boolean doesExist(String objectKey) {
+        Blob blob = getBlob(objectKey);
+        return blob != null;
+    }
+
+    public boolean doesExist(String objectKey, String path) {
+        Blob blob = getBlob(path + "/" + objectKey);
+        return blob != null;
     }
 
     public void delete(String objectKey) throws ObjectNotFoundException {
@@ -100,14 +97,13 @@ public class DataObjectService implements DataObject {
         }
     }
 
-    public boolean download(String objectKey, String path) throws ObjectNotFoundException {
+     public byte[] download(String objectKey) throws ObjectNotFoundException {
         Blob blob = getBlob(objectKey);
         if (blob == null) throw new ObjectNotFoundException(objectKey);
         else {
-            blob.downloadTo(Paths.get(path + objectKey));
-            return true;
+            return blob.getContent();
         }
-    }
+     }
 
     public URI publish(String objectKey) throws ObjectNotFoundException {
         Blob blob = getBlob(objectKey);
