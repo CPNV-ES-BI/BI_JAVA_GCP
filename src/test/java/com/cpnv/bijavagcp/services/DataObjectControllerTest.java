@@ -99,9 +99,9 @@ class DataObjectControllerTest {
     public void test_DownloadObject_NominalCase_Success() throws ObjectNotFoundException {
         //given
         //when
-        boolean result = object.download(objectKey,destination);
+        byte[] result = object.download(objectKey);
         //then
-        assertTrue(result);
+        assertNotNull(result);
     }
 
     @Test
@@ -111,7 +111,7 @@ class DataObjectControllerTest {
         boolean result = object.doesExist(objectKey2);
         assertFalse(result);
         //then
-        assertThrows(ObjectNotFoundException.class, () -> object.download(objectKey2,destination));
+        assertThrows(ObjectNotFoundException.class, () -> object.download(objectKey2));
     }
 
     @Test

@@ -68,10 +68,12 @@ public class DataObjectService implements DataObject {
         Blob blob = getBlob(objectKey);
         return blob != null;
     }
+
     public boolean doesExist(String objectKey, String path) {
         Blob blob = getBlob(path + "/" + objectKey);
         return blob != null;
     }
+
     public void delete(String objectKey) throws ObjectNotFoundException {
         Blob blob = getBlob(objectKey);
         if (!doesExist(objectKey)) throw new ObjectNotFoundException(objectKey);
