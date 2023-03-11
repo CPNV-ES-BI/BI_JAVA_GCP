@@ -16,7 +16,7 @@ package BIJAVAGCP {
         + doesExist(objectKey: String, path: String = false): boolean
         + create(objectKey: String, content: String, path String = null): void
         + download(objectKey: String): byte[]
-        + publish(objectKey: String): URI
+        + publish(remoteFullPath: String, expirationTime:int = 90): URI
         + delete(objectKey: String, isRecursive: boolean = false): void
     }
 
