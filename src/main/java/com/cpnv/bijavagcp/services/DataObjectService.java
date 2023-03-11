@@ -105,13 +105,22 @@ public class DataObjectService implements DataObject {
         }
      }
 
-    public URI publish(String objectKey) throws ObjectNotFoundException {
-        Blob blob = getBlob(objectKey);
-        if (blob == null) throw new ObjectNotFoundException(objectKey);
+    public URI publish(String remoteFullPath) throws ObjectNotFoundException {
+        Blob blob = getBlob(remoteFullPath);
+        if (blob == null) throw new ObjectNotFoundException(remoteFullPath);
         else {
-            return URI.create(blob.signUrl(2, TimeUnit.DAYS).toString());
+            return URI.create(blob.signUrl(90, TimeUnit. SECONDS).toString());
         }
     }
+
+    public URI publish(String remoteFullPath,int expirationTime) throws ObjectNotFoundException {
+        Blob blob = getBlob(remoteFullPath);
+        if (blob == null) throw new ObjectNotFoundException(remoteFullPath);
+        else {
+            return URI.create(blob.signUrl(expirationTime, TimeUnit.SECONDS).toString());
+        }
+    }
+
 
     public String read(String objectKey) {
         Blob blob = getBlob(objectKey);

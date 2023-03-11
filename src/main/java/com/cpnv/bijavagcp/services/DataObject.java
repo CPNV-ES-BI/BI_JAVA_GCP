@@ -21,5 +21,7 @@ public interface DataObject {
 
     byte[] download(String objectKey) throws ObjectNotFoundException;
 
-    URI publish(String objectKey) throws ObjectNotFoundException;
+    URI publish(String remoteFullPath) throws ObjectNotFoundException;
+
+    URI publish(String remoteFullPath, int expirationTime) throws ObjectNotFoundException;
 }
