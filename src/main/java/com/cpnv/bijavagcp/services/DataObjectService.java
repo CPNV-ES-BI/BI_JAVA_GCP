@@ -5,8 +5,8 @@ import com.cpnv.bijavagcp.exceptions.ObjectAlreadyExistsException;
 import com.cpnv.bijavagcp.exceptions.ObjectNotFoundException;
 import com.google.api.gax.paging.Page;
 import com.google.cloud.storage.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.net.URI;
 import java.util.LinkedList;
@@ -61,6 +61,15 @@ public class DataObjectService implements DataObject {
         if (doesExist(path + "/" + objectKey)) throw new ObjectAlreadyExistsException(objectKey);
         else {
             storage.create(blobInfo, content.getBytes());
+        }
+    }
+    public void upload(MultipartFile file,String remoteFullPath){
+        BlobId blobId = BlobId.of(bucketName, remoteFullPath);
+        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(file.getContentType()).build();
+        try {
+            storage.create(blobInfo, file.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
