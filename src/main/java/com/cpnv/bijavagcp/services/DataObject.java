@@ -1,7 +1,7 @@
 package com.cpnv.bijavagcp.services;
 
 import com.cpnv.bijavagcp.exceptions.ObjectAlreadyExistsException;
-import com.cpnv.bijavagcp.exceptions.ObjectNotFoundException;
+import com.cpnv.bijavagcp.exceptions.ObjectNotFoundException;import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URI;
 
@@ -21,5 +21,9 @@ public interface DataObject {
 
     byte[] download(String objectKey) throws ObjectNotFoundException;
 
-    URI publish(String objectKey) throws ObjectNotFoundException;
+    void upload(MultipartFile file, String remoteFullPath) throws ObjectAlreadyExistsException;
+
+    URI publish(String remoteFullPath) throws ObjectNotFoundException;
+
+    URI publish(String remoteFullPath, int expirationTime) throws ObjectNotFoundException;
 }

@@ -5,8 +5,8 @@ import com.cpnv.bijavagcp.exceptions.ObjectAlreadyExistsException;
 import com.cpnv.bijavagcp.exceptions.ObjectNotFoundException;
 import com.google.api.gax.paging.Page;
 import com.google.cloud.storage.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.net.URI;
 import java.util.LinkedList;
@@ -63,6 +63,15 @@ public class DataObjectService implements DataObject {
             storage.create(blobInfo, content.getBytes());
         }
     }
+    public void upload(MultipartFile file,String remoteFullPath){
+        BlobId blobId = BlobId.of(bucketName, remoteFullPath);
+        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(file.getContentType()).build();
+        try {
+            storage.create(blobInfo, file.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public boolean doesExist(String objectKey) {
         Blob blob = getBlob(objectKey);
@@ -105,13 +114,22 @@ public class DataObjectService implements DataObject {
         }
      }
 
-    public URI publish(String objectKey) throws ObjectNotFoundException {
-        Blob blob = getBlob(objectKey);
-        if (blob == null) throw new ObjectNotFoundException(objectKey);
+    public URI publish(String remoteFullPath) throws ObjectNotFoundException {
+        Blob blob = getBlob(remoteFullPath);
+        if (blob == null) throw new ObjectNotFoundException(remoteFullPath);
         else {
-            return URI.create(blob.signUrl(2, TimeUnit.DAYS).toString());
+            return URI.create(blob.signUrl(90, TimeUnit. SECONDS).toString());
         }
     }
+
+    public URI publish(String remoteFullPath,int expirationTime) throws ObjectNotFoundException {
+        Blob blob = getBlob(remoteFullPath);
+        if (blob == null) throw new ObjectNotFoundException(remoteFullPath);
+        else {
+            return URI.create(blob.signUrl(expirationTime, TimeUnit.SECONDS).toString());
+        }
+    }
+
 
     public String read(String objectKey) {
         Blob blob = getBlob(objectKey);

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URI;
@@ -40,6 +41,12 @@ public class DataObjectController {
             return new ResponseEntity<>(key + " already exists", HttpStatus.CONFLICT);
         }
     }
+
+    @PostMapping("objects/upload")
+    public ResponseEntity<String> uploadObject(@RequestParam String remoteFullPath, @RequestBody MultipartFile file) {
+        object.upload(file, remoteFullPath);
+            return new ResponseEntity<>(remoteFullPath + " uploaded", HttpStatus.CREATED);
+        }
 
     @GetMapping("/objects/{key}")
     public ResponseEntity<String> getObject(@PathVariable String key) {
