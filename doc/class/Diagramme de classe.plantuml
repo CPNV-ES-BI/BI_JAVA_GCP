@@ -18,6 +18,7 @@ package BIJAVAGCP {
         + download(objectKey: String): byte[]
         + publish(remoteFullPath: String, expirationTime:int = 90): URI
         + delete(objectKey: String, isRecursive: boolean = false): void
+        + upload(file: MultipartFile, remoteFullPath: String): void
     }
 
     class DataObjectService {
