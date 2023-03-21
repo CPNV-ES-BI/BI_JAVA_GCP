@@ -72,7 +72,7 @@ public class DataObjectController {
     }
 
     @PatchMapping("/objects/{key}/publish")
-    public ResponseEntity<String> uploadObject(@PathVariable String key) {
+    public ResponseEntity<String> publishObject(@PathVariable String key) {
         try {
             URI result = object.publish(key);
             return new ResponseEntity<>(String.valueOf(result), HttpStatus.OK);
