@@ -59,7 +59,7 @@ public class DataObjectController {
                 return new ResponseEntity<>(list.toString(), HttpStatus.OK);
             }
         }
-        return new ResponseEntity<>(key + " does not exist", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/objects/{key}")
