@@ -63,9 +63,9 @@ public class DataObjectController {
     }
 
     @DeleteMapping("/objects/{key}")
-    public ResponseEntity<String> deleteObject(@PathVariable String key) {
+    public ResponseEntity<String> deleteObject(@PathVariable String key)throws ObjectNotFoundException {
         if (object.doesExist(key)) {
-            object.delete(key, true);
+            object.delete(key);
             return new ResponseEntity<>(key + " deleted", HttpStatus.OK);
         }
         return new ResponseEntity<>(key + " does not exist", HttpStatus.NOT_FOUND);
