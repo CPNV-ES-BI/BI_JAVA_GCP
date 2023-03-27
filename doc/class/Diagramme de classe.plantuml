@@ -13,12 +13,12 @@ endlegend
 
 package BIJAVAGCP {
     interface DataObject << interface >>{
-        + list(path String = null): LinkedList<String>
-        + delete(objectKey: String, isRecursive: boolean = false): void
-        + doesExist(objectKey: String, path: String[]?): boolean
-        + download(objectKey: String, destination: String): boolean
-        + publish(objectKey: String): URI
+        + doesExist(objectKey: String, path: String = false): boolean
         + create(objectKey: String, content: String, path String = null): void
+        + download(objectKey: String): byte[]
+        + publish(remoteFullPath: String, expirationTime:int = 90): URI
+        + delete(objectKey: String, isRecursive: boolean = false): void
+        + upload(file: MultipartFile, remoteFullPath: String): void
     }
 
     class DataObjectService {

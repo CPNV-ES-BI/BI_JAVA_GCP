@@ -5,11 +5,10 @@ import com.cpnv.bijavagcp.exceptions.ObjectAlreadyExistsException;
 import com.cpnv.bijavagcp.exceptions.ObjectNotFoundException;
 import com.google.api.gax.paging.Page;
 import com.google.cloud.storage.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.net.URI;
-import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.concurrent.TimeUnit;
 
@@ -64,17 +63,24 @@ public class DataObjectService implements DataObject {
             storage.create(blobInfo, content.getBytes());
         }
     }
-
-    public boolean doesExist(String objectKey, @Nullable String... path) {
-        String fullPath;
-        if (path == null || path.length == 0) fullPath = objectKey;
-        else {
-            fullPath = String.join("/", path) + "/" + objectKey;
+    public void upload(MultipartFile file,String remoteFullPath){
+        BlobId blobId = BlobId.of(bucketName, remoteFullPath);
+        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(file.getContentType()).build();
+        try {
+            storage.create(blobInfo, file.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        Blob blob = getBlob(fullPath);
-        if (blob != null) return true;
-        Page<Blob> blobs = storage.list(bucketName, Storage.BlobListOption.prefix(fullPath + "/"));
-        return blobs.iterateAll().iterator().hasNext();
+    }
+
+    public boolean doesExist(String objectKey) {
+        Blob blob = getBlob(objectKey);
+        return blob != null;
+    }
+
+    public boolean doesExist(String objectKey, String path) {
+        Blob blob = getBlob(path + "/" + objectKey);
+        return blob != null;
     }
 
     public void delete(String objectKey) throws ObjectNotFoundException {
@@ -100,22 +106,30 @@ public class DataObjectService implements DataObject {
         }
     }
 
-    public boolean download(String objectKey, String path) throws ObjectNotFoundException {
+     public byte[] download(String objectKey) throws ObjectNotFoundException {
         Blob blob = getBlob(objectKey);
         if (blob == null) throw new ObjectNotFoundException(objectKey);
         else {
-            blob.downloadTo(Paths.get(path + objectKey));
-            return true;
+            return blob.getContent();
+        }
+     }
+
+    public URI publish(String remoteFullPath) throws ObjectNotFoundException {
+        Blob blob = getBlob(remoteFullPath);
+        if (blob == null) throw new ObjectNotFoundException(remoteFullPath);
+        else {
+            return URI.create(blob.signUrl(90, TimeUnit. SECONDS).toString());
         }
     }
 
-    public URI publish(String objectKey) throws ObjectNotFoundException {
-        Blob blob = getBlob(objectKey);
-        if (blob == null) throw new ObjectNotFoundException(objectKey);
+    public URI publish(String remoteFullPath,int expirationTime) throws ObjectNotFoundException {
+        Blob blob = getBlob(remoteFullPath);
+        if (blob == null) throw new ObjectNotFoundException(remoteFullPath);
         else {
-            return URI.create(blob.signUrl(2, TimeUnit.DAYS).toString());
+            return URI.create(blob.signUrl(expirationTime, TimeUnit.SECONDS).toString());
         }
     }
+
 
     public String read(String objectKey) {
         Blob blob = getBlob(objectKey);

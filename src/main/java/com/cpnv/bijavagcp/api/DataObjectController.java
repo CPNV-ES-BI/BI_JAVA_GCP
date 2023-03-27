@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URI;
@@ -41,30 +42,37 @@ public class DataObjectController {
         }
     }
 
+    @PostMapping("objects/upload")
+    public ResponseEntity<String> uploadObject(@RequestParam String remoteFullPath, @RequestBody MultipartFile file) {
+        object.upload(file, remoteFullPath);
+            return new ResponseEntity<>(remoteFullPath + " uploaded", HttpStatus.CREATED);
+        }
+
     @GetMapping("/objects/{key}")
     public ResponseEntity<String> getObject(@PathVariable String key) {
+        key = key.replace("&", "/");
         if (object.doesExist(key)) {
             LinkedList<String> list = object.list(key);
-            if (list.size() == 1) {
+            if (list.isEmpty()) {
                 return new ResponseEntity<>(object.read(key), HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(list.toString(), HttpStatus.OK);
             }
         }
-        return new ResponseEntity<>(key + " does not exist", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/objects/{key}")
-    public ResponseEntity<String> deleteObject(@PathVariable String key) {
+    public ResponseEntity<String> deleteObject(@PathVariable String key)throws ObjectNotFoundException {
         if (object.doesExist(key)) {
-            object.delete(key, true);
+            object.delete(key);
             return new ResponseEntity<>(key + " deleted", HttpStatus.OK);
         }
         return new ResponseEntity<>(key + " does not exist", HttpStatus.NOT_FOUND);
     }
 
     @PatchMapping("/objects/{key}/publish")
-    public ResponseEntity<String> uploadObject(@PathVariable String key) {
+    public ResponseEntity<String> publishObject(@PathVariable String key) {
         try {
             URI result = object.publish(key);
             return new ResponseEntity<>(String.valueOf(result), HttpStatus.OK);
@@ -77,8 +85,8 @@ public class DataObjectController {
     public ResponseEntity<String> downloadObject(@PathVariable String key) {
         String path = "src/main/resources/";
         try {
-            boolean result = object.download(key, path);
-            if (result) {
+            byte[] result = object.download(key);
+            if (result != null) {
                 return new ResponseEntity<>(key + " downloaded", HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(key + " not downloaded", HttpStatus.INTERNAL_SERVER_ERROR);
